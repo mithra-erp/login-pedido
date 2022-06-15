@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <!-- HTML5Shiv -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <![endif]-->
+
+    <!-- Estilo customizado -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./CSS/stylesheet.css">
+    <link rel="stylesheet" href="./CSS/pedido.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <title>Pedido</title>
+</head>
+
+<body>
+
+    <main class="container">
+        <h2>Adicionar produto</h2>
+        <div class="produto form-group">
+            <div>
+                <label for="input-produto">Produto</label>
+                <input id="input-produto" class="produto form-control" type="text" placeholder="Insira o produto">
+            </div>
+            <div>
+                <label for="input-quantidade">Quantidade</label>
+                <input id="input-quantidade" class="quantidade form-control" type="text" placeholder="Quantidade"
+                >
+                
+            </div>
+            <div class="botoes-quantidade">
+                <button 
+                    type="button" class="increment-decrement" onclick="somaQuantidade(-1, '${codigoProduto}')"
+                    value="-">-
+                </button>
+                <button 
+                    type="button" class="increment-decrement" onclick="somaQuantidade(1, '${codigoProduto}')"
+                    value="+">+
+                </button>
+            </div>
+                <button class="btn btn-lg" onclick="adicionaProduto()">Adicionar produto</button>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-12">
+                <table id="produtos-carrinho">
+                    <thead>
+                        <tr>
+                            <th class="produto-tabela">Produto</th>
+                            <!-- <th>Preço</th> -->
+                            <th>Quantidade</th>
+                            <!-- <th>Total</th> -->
+                        </tr>
+                    </thead>
+
+                </table>
+            </div>
+        </div>
+        
+    </main>
+    <script src="./js/pedido.js"></script>
+    <!-- <script src="./js/frete.js"></script> -->
+</body>
+
+</html>

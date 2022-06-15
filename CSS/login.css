@@ -1,0 +1,20 @@
+.inputs-usuario {
+    width: 400px;
+    margin: 10% auto;
+    padding: 2rem; 
+    background: #f6f6f6; border-radius: 1rem;
+}
+
+.inputs-usuario button {
+    margin: 1rem 0;
+}
+
+button.container-fluid.btn.btn-lg {
+    color: #f6f6f6;
+    background: var(--blue-100);
+    
+    transition: filter 0.2s;
+}
+button.container-fluid.btn.btn-lg:hover {
+    filter: brightness(0.9);
+}
