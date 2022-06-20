@@ -68,7 +68,7 @@ div#input-produtoautocomplete-list.autocomplete-items {
     overflow-y: scroll;
     max-height: 200px;
     position: absolute;
-    z-index: 2;
+    z-index: 1;
 }
 
 .produto label {
