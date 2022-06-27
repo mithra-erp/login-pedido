@@ -61,6 +61,14 @@ div.produto.form-group {
     border-radius: 0.25rem;
     display: block;
     justify-content: space-between;
+    position: relative;
+    
+}
+div#input-produtoautocomplete-list.autocomplete-items {
+    overflow-y: scroll;
+    max-height: 200px;
+    position: absolute;
+    z-index: 1;
 }
 
 .produto label {
@@ -90,13 +98,14 @@ div.botoes-quantidade {
 
 .produto button.btn.btn-lg {
     font-size: 1rem;
-    margin: 1.8rem 0 0 0.8rem;
+    margin: 2.1rem 1rem;
     border-radius: 0.25rem;
     color: var(--white);
     background: var(--blue-100);
     transition: filter 0.2s;
     height: 2.4rem;
     align-self: center;
+   
 
 }
 
