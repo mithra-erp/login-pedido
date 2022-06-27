@@ -1,6 +1,5 @@
-const xClientId = 'MDMyODA3NzQ1MzU=';
-
 const validaUsuario = (event) => {
+    console.log(xClientId)
     event.preventDefault();
     let login = document.querySelector('#usuario-login');
     let senha = document.querySelector('#usuario-senha');
@@ -19,11 +18,14 @@ const validaUsuario = (event) => {
     };
 
     fetch('https://api.mithra.com.br/mithra/v1/auth', options).then(async response => {
-        console.log(response);
         if (response.ok) {
             let json = await response.json();
             console.log(json);
-            sessionStorage.setItem('jwt', json.access_token);
+            navigator.serviceWorker.controller.postMessage({
+                type: 'SET_TOKEN',
+                token: json.access_token
+            })
+            //sessionStorage.setItem('jwt', json.access_token);
             window.location.href = "/pedido.html"
         }
     })

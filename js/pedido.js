@@ -1,6 +1,5 @@
-const xClientId = 'MDMyODA3NzQ1MzU=';
+const form = document.querySelector("#form-pedido");
 var produtosArray = [];
-let produto = document.querySelector('#input-produto');
 let quantidade = document.querySelector('#input-quantidade');
 
 let produtosPedido = JSON.parse(localStorage.getItem('produtosPedido')) || [];
@@ -24,13 +23,15 @@ produtosPedido.forEach(produto => {
 });
 
 const adicionaProduto = (event) => {
+    let produto = document.querySelector('#input-produto');
+    console.log(produto)
     console.log(produto.value);
     console.log(quantidade.value);
+    let code = produto.getAttribute('data-code');
 
-
-    const corpoTabelaProdutos = `
-            <tbody>
-            <tr class="produto-carrinho">
+    const corpoTabelaProdutos =
+        `<tbody>
+            <tr class="produto-carrinho" data-code="${code}">
                 <td class="produto">
                     ${produto.value}
                 </td>
@@ -39,37 +40,44 @@ const adicionaProduto = (event) => {
                     <input min="0" value="${quantidade.value}"  type="number" name="" placeholder="Qtd" disabled>
                 </td>
             </tr>
-        </tbody>
-    `;
+        </tbody>`;
 
     tabelaProdutos.innerHTML += corpoTabelaProdutos;
     produtosPedido.push({
+        codigo: code,
         produto: produto.value,
         quantidade: quantidade.value,
     })
     localStorage.setItem('produtosPedido', JSON.stringify(produtosPedido));
+    form.reset();
+    produto.focus();
 }
 
-document.addEventListener("DOMContentLoaded", event => {
+//document.addEventListener("DOMContentLoaded", event => {
+
+const onContentLoaded = (event) => {
     console.log("DOM completamente carregado e analisado");
 
-    let access_token = sessionStorage.getItem('jwt');
     let search = {
         area: "PRODUT",
+        fields: [ "CODIGO", "DESCRICAO"],
         search: [
             {
-                field: "GRUPO",
-                operation: "LIKE",
-                value: "50%"
+                field: "STATUS",
+                operation: "EQUAL_TO",
+                value: "A"
             }
         ]
     }
+    
+    navigator.serviceWorker.controller.postMessage({
+        type: 'CHECK_TOKEN'
+    })
 
     let options = {
         method: 'post',
         headers: new Headers({
-            'X-Client-Id': xClientId,
-            'Authorization': 'Bearer ' + access_token
+            'X-Client-Id': xClientId
         }),
         body: JSON.stringify(search)
     };
@@ -77,19 +85,21 @@ document.addEventListener("DOMContentLoaded", event => {
     fetch('https://api.mithra.com.br/mithra/v1/search', options).then(async response => {
         if (response.ok) {
             json = await response.json()
-            let produtos = json.data
-            console.log(produtos);
-            for (const produto of produtos) {
-                produtosArray.push(produto.DESCRICAO);
-            }
+            let produtosArray = json.data
             console.log(produtosArray)
-            autocomplete(document.querySelector("input.produto"), produtosArray);
+
+            autocomplete(document.querySelector("#input-produto"), produtosArray);
+        } else {
+            if (response.status == 401) {
+                sessionStorage.clear();
+                window.location.href = '/';
+            }
         }
     })
-});
+};
 
+document.addEventListener("DOMContentLoaded", onContentLoaded);
 function autocomplete(inp, arr) {
-    console.log(inp);
     /*the autocomplete function takes two arguments,
     the text field element and an array of possible autocompleted values:*/
     var currentFocus;
@@ -109,18 +119,20 @@ function autocomplete(inp, arr) {
         /*for each item in the array...*/
         for (i = 0; i < arr.length; i++) {
             /*check if the item starts with the same letters as the text field value:*/
-            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+            if (arr[i].DESCRICAO.toUpperCase().includes(val.toUpperCase())) {
                 /*create a DIV element for each matching element:*/
                 b = document.createElement("DIV");
+                b.setAttribute('data-code', arr[i].CODIGO);
                 /*make the matching letters bold:*/
-                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-                b.innerHTML += arr[i].substr(val.length);
+                b.innerHTML = "<strong>" + arr[i].DESCRICAO.substr(0, val.length) + "</strong>";
+                b.innerHTML += arr[i].DESCRICAO.substr(val.length);
                 /*insert a input field that will hold the current array item's value:*/
-                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                b.innerHTML += "<input type='hidden' value='" + arr[i].DESCRICAO + "'>";
                 /*execute a function when someone clicks on the item value (DIV element):*/
                 b.addEventListener("click", function (e) {
                     /*insert the value for the autocomplete text field:*/
                     inp.value = this.getElementsByTagName("input")[0].value;
+                    inp.setAttribute('data-code', this.getAttribute('data-code'));
                     /*close the list of autocompleted values,
                     (or any other open lists of autocompleted values:*/
                     closeAllLists();
@@ -163,6 +175,7 @@ function autocomplete(inp, arr) {
         if (currentFocus < 0) currentFocus = (x.length - 1);
         /*add class "autocomplete-active":*/
         x[currentFocus].classList.add("autocomplete-active");
+        inp.value = x[currentFocus].lastElementChild.value;
     }
     function removeActive(x) {
         /*a function to remove the "active" class from all autocomplete items:*/
