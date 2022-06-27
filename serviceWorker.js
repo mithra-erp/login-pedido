@@ -13,7 +13,8 @@ self.addEventListener('activate', function(event) {
 const whitelistedOrigins = [
     "http://localhost", // dev
     "http://127.0.0.1:5500", // dev
-    'https://api.mithra.com.br'
+    'https://api.mithra.com.br',
+    'https://mithra-erp.github.io'
 ]
 
 const whitelistedPathRegex = /\/mithra\/[^.]*$/ // anything under /api
