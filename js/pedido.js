@@ -1,4 +1,6 @@
 const form = document.querySelector("#form-pedido");
+const inputCgc = document.querySelector("#input-cgc");
+
 var produtosArray = [];
 let quantidade = document.querySelector('#input-quantidade');
 
@@ -58,6 +60,11 @@ const adicionaProduto = (event) => {
 const onContentLoaded = (event) => {
     console.log("DOM completamente carregado e analisado");
 
+   
+    navigator.serviceWorker.controller.postMessage({
+        type: 'CHECK_TOKEN'
+    })
+
     let search = {
         area: "PRODUT",
         fields: [ "CODIGO", "DESCRICAO"],
@@ -70,10 +77,6 @@ const onContentLoaded = (event) => {
         ]
     }
     
-    navigator.serviceWorker.controller.postMessage({
-        type: 'CHECK_TOKEN'
-    })
-
     let options = {
         method: 'post',
         headers: new Headers({
@@ -98,7 +101,48 @@ const onContentLoaded = (event) => {
     })
 };
 
-document.addEventListener("DOMContentLoaded", onContentLoaded);
+inputCgc.addEventListener('focusout', (event) => {
+    console.log(inputCgc.value)
+    
+    let data = {
+        area: "CLIENT",
+        fields: [ "CODIGO", "NOME", "ENDERECO", "NUMERO", "BAIRRO", "CEP", "MUNICIPIO", "TELEFO" ],
+        search: [
+            {
+                field: "CGC",
+                operation: "EQUAL_TO",
+                value: inputCgc.value
+            }
+        ]
+    }
+
+    ShowOverlay();
+    search(data).then(async response => {
+        
+        if (response.ok) {
+            let json = await response.json()
+            let client = json.data;
+
+            if (client.length > 0) {
+                client = client[0]
+                console.log(client)
+                document.querySelector("#input-codigo-cliente").value = client.CODIGO;
+                document.querySelector("#input-nome").value = client.NOME;
+                document.querySelector("#input-endereco").value = client.ENDERECO;
+                document.querySelector("#input-numero").value = client.NUMERO;
+                document.querySelector("#input-bairro").value = client.BAIRRO;
+                document.querySelector("#input-cep").value = client.CEP;
+                document.querySelector("#input-cidade").value = client.MUNICIPIO;
+                document.querySelector("#input-telefone").value = client.TELEFO;
+            }
+        } else {
+            if (response.status == 401) {
+            }
+        }
+        HideOverlay();
+    })
+}); 
+
 function autocomplete(inp, arr) {
     /*the autocomplete function takes two arguments,
     the text field element and an array of possible autocompleted values:*/
@@ -198,3 +242,5 @@ function autocomplete(inp, arr) {
         closeAllLists(e.target);
     });
 }
+
+document.addEventListener("DOMContentLoaded", onContentLoaded);
