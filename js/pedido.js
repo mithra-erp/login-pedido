@@ -1,12 +1,16 @@
 const form = document.querySelector("#form-pedido");
 const inputCgc = document.querySelector("#input-cgc");
 
+
+
 var produtosArray = [];
 let quantidade = document.querySelector('#input-quantidade');
 
 let produtosPedido = JSON.parse(localStorage.getItem('produtosPedido')) || [];
 
 let tabelaProdutos = document.getElementById('produtos-carrinho');
+
+console.log(produtosPedido);
 produtosPedido.forEach(produto => {
     const corpoTabelaProdutos = `
         <tbody>
@@ -17,6 +21,7 @@ produtosPedido.forEach(produto => {
         
             <td class="produto-quantidade">
                 <input min="0" value="${produto.quantidade}"  type="number" name="" placeholder="Qtd" disabled>
+                <img src="./img/times-solid.svg" class="remove-item" alt="Remover produto" onclick="removeItem('${produto.codigo}')">
             </td>
         </tr>
     </tbody>
@@ -40,6 +45,7 @@ const adicionaProduto = (event) => {
                
                  <td class="produto-quantidade">
                     <input min="0" value="${quantidade.value}"  type="number" name="" placeholder="Qtd" disabled>
+                    <img src="./img/times-solid.svg" class="remove-item" alt="Remover produto" onclick="removeItem('${code}')">
                 </td>
             </tr>
         </tbody>`;
@@ -53,6 +59,18 @@ const adicionaProduto = (event) => {
     localStorage.setItem('produtosPedido', JSON.stringify(produtosPedido));
     form.reset();
     produto.focus();
+}
+
+function removeItem(codigoProduto) {
+
+    
+    let quantidadeProduto = produtosPedido.find(item=> item.codigo === codigoProduto);
+    let indiceProduto = produtosPedido.indexOf(quantidadeProduto);
+    produtosPedido.splice(indiceProduto, 1);
+    localStorage.setItem("produtos", JSON.stringify(produtosPedido));
+
+    document.getElementById(`${codigoProduto}`).remove();
+    atualizaTotais();
 }
 
 //document.addEventListener("DOMContentLoaded", event => {
