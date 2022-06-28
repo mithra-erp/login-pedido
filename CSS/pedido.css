@@ -45,7 +45,9 @@ button.increment-decrement {
 td.produto-quantidade input {
     padding: 0;
     width: 3rem;
+    background: none;
 }
+
 
 main h2 {
     border-bottom: 1px solid var(--gray3);
@@ -64,6 +66,17 @@ div.produto.form-group {
     position: relative;
     
 }
+div.cliente.form-group {
+    margin: 1.5rem 0;
+    padding: 1rem 2rem;
+    border: 1px solid var(--gray);
+    width: 100%;
+    /* min-width: 00px; */
+    border-radius: 0.25rem;
+    /* display: block; */
+    /* justify-content: space-between; */
+    /* position: relative; */
+}
 div#input-produtoautocomplete-list.autocomplete-items {
     overflow-y: scroll;
     max-height: 200px;
@@ -71,18 +84,19 @@ div#input-produtoautocomplete-list.autocomplete-items {
     z-index: 1;
 }
 
-.produto label {
+.produto label, .cliente label {
     font-size: 1.2rem;
     display: inline;
     margin: 1rem 0;
     font-weight: 500;
 }
 
-.produto input {
+.produto input, .cliente input {
     margin: 0 0.5rem;
+    width: 100%;
 }
 
-.produto input.form-control {
+.produto input.form-control, .cliente input.form-control {
     margin: 1rem 0;
 }
 
@@ -98,7 +112,7 @@ div.botoes-quantidade {
 
 .produto button.btn.btn-lg {
     font-size: 1rem;
-    margin: 2.1rem 1rem;
+    margin: 2.1rem 0;
     border-radius: 0.25rem;
     color: var(--white);
     background: var(--blue-100);
@@ -108,8 +122,22 @@ div.botoes-quantidade {
    
 
 }
+div#botao-pedido {
+    display: flex;
+    justify-content: end;
+    margin: 1.3rem 0;
+}
+div#botao-pedido button.btn.btn-success.btn-lg {
+    font-size: 1.1rem;
+    border-radius: 0.25rem;
+    color: var(--white);
+    /* background: var(--blue-200); */
+    transition: filter 0.2s;
+    height: 2.6rem;
+    /* align-self: end;  */
+}
 
-.produto button.btn.btn-lg:hover {
+.produto button.btn.btn-lg:hover,  div#botao-pedido button.btn.btn-lg:hover{
     filter: brightness(0.9);
 }
 
@@ -117,10 +145,6 @@ div.botoes-quantidade {
     clear: right;
 }
 
-table#fechamento-carrinho {
-    float: right;
-    width: 500px;
-}
 
 @media (max-width: 500px) {
     html {
@@ -242,7 +266,7 @@ table#fechamento-carrinho {
 }
 
 @media (min-width: 1000px) {
-    div.produto.form-group {
+    div.produto.form-group, div.cliente.form-group {
         display: flex;
     }
 }
