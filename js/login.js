@@ -26,7 +26,7 @@ const validaUsuario = (event) => {
                 token: json.access_token
             })
             //sessionStorage.setItem('jwt', json.access_token);
-            window.location.href = "/pedido.html"
+            window.location.href = "pedido.html"
         }
     })
 }

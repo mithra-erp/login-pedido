@@ -124,8 +124,8 @@ function autocomplete(inp, arr) {
                 b = document.createElement("DIV");
                 b.setAttribute('data-code', arr[i].CODIGO);
                 /*make the matching letters bold:*/
-                b.innerHTML = "<strong>" + arr[i].DESCRICAO.substr(0, val.length) + "</strong>";
-                b.innerHTML += arr[i].DESCRICAO.substr(val.length);
+                //b.innerHTML = "<strong>" + arr[i].DESCRICAO.substr(0, val.length) + "</strong>";
+                b.innerHTML = arr[i].DESCRICAO.toUpperCase().replace(val.toUpperCase(), `<strong>${val.toUpperCase()}</strong>`);
                 /*insert a input field that will hold the current array item's value:*/
                 b.innerHTML += "<input type='hidden' value='" + arr[i].DESCRICAO + "'>";
                 /*execute a function when someone clicks on the item value (DIV element):*/
