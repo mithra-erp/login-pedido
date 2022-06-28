@@ -137,7 +137,7 @@ div#botao-pedido button.btn.btn-success.btn-lg {
     /* align-self: end;  */
 }
 
-.produto button.btn.btn-lg:hover,  div#botao-pedido button.btn.btn-lg:hover{
+.produto button.btn.btn-lg:hover{
     filter: brightness(0.9);
 }
 
@@ -203,45 +203,11 @@ div#botao-pedido button.btn.btn-success.btn-lg {
         width: 100%;
     }
 
-    button#mais-produtos.btn.btn-lg,
-    button#finalizar-compra.btn.btn-lg {
-        display: block;
+    .produto button.btn.btn-lg {
         width: 100%;
-
     }
-
-    a#texto-finalizar-compra {
-        color: var(--white);
-        text-decoration: none;
-        font-size: 30px;
-    }
-
-    section#forma-pagamento span {
-        font-size: 0.6rem;
-    }
-
-    section#forma-pagamento img {
-        height: 20px;
-    }
-
-    section#forma-pagamento li.nav-item {
-        width: 8rem;
-        overflow-x: hidden;
-    }
-
-    #formas-pagamento a.nav-link {
-        padding: 0.5rem 3.5rem 0.5rem 0;
-    }
-
-    #formas-pagamento li.nav-item:hover {
-        background: none;
-        border: none;
-    }
-
-    section#cartao-credito,
-    section#boleto-bancario,
-    section#pagamento-pix {
-        width: 85%;
+    div#botao-pedido button.btn.btn-success.btn-lg {
+        width: 100%;
     }
 
 }
