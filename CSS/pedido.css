@@ -141,8 +141,14 @@ div#botao-pedido button.btn.btn-success.btn-lg {
     filter: brightness(0.9);
 }
 
-.resumo-carrinho {
-    clear: right;
+img.remove-item {
+    height: 20px;
+    cursor: pointer;
+    text-align: right;
+    /* padding: 2px; */
+    margin-top: -3px;
+    color: white;
+    
 }
 
 
