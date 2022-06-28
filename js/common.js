@@ -1,7 +1,6 @@
 const xClientId = 'NDM5ODY1ODQwMDAxMjk=';
 
 const search = async (search) => {
-    
     let options = {
         method: 'post',
         headers: new Headers({
@@ -11,6 +10,18 @@ const search = async (search) => {
     };
 
     return fetch('https://api.mithra.com.br/mithra/v1/search', options);
+}
+
+const insert = async (data) => {
+    let options = {
+        method: 'post',
+        headers: new Headers({
+            'X-Client-Id': xClientId
+        }),
+        body: JSON.stringify(data)
+    };
+
+    return fetch('https://api.mithra.com.br/mithra/v1/template', options);
 }
 
 // Mostra overlay para chamadas ajax.

@@ -124,8 +124,7 @@ inputCgc.addEventListener('focusout', (event) => {
             let client = json.data;
 
             if (client.length > 0) {
-                client = client[0]
-                console.log(client)
+                client = client[0];
                 document.querySelector("#input-codigo-cliente").value = client.CODIGO;
                 document.querySelector("#input-nome").value = client.NOME;
                 document.querySelector("#input-endereco").value = client.ENDERECO;
@@ -142,6 +141,33 @@ inputCgc.addEventListener('focusout', (event) => {
         HideOverlay();
     })
 }); 
+
+document.querySelector("#finaliza-pedido-botao").addEventListener('click', (event) => {
+    ShowOverlay();
+
+    let data = [{
+        area: "CABPDV",
+        data: [{
+            CLIENTE: document.querySelector("#input-codigo-cliente").value,
+            VENDEDOR: "",
+            CONDICAO: "001",
+            FORMPG: "001",
+            EMISSAO: "20200101",
+            DATAINC: "20200101",
+            TIPO: "P",
+            FILIAL: "0101",
+            TABELA: "1",
+        }]
+    }];
+console.log(JSON.stringify(data))
+    insert(data).then(async response => {
+        
+        if (response.ok) {
+            console.log(await response.text());
+        }
+        HideOverlay();
+    });;
+});
 
 function autocomplete(inp, arr) {
     /*the autocomplete function takes two arguments,
