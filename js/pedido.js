@@ -12,6 +12,12 @@ let tabelaProdutos = document.getElementById('produtos-carrinho');
 
 console.log(produtosPedido);
 produtosPedido.forEach(produto => {
+    let divValor = document.querySelector('#div-input-valor');
+
+    console.log(produto.valor);
+    console.log(produto);
+    let valorProduto = produto.valor;
+    let totalProduto = produto.quantidade * valorProduto;
     const corpoTabelaProdutos = `
         <tbody>
         <tr class="produto-carrinho">
@@ -23,29 +29,51 @@ produtosPedido.forEach(produto => {
                 <input min="0" value="${produto.quantidade}"  type="number" name="" placeholder="Qtd" disabled>
                 <img src="./img/times-solid.svg" class="remove-item" alt="Remover produto" onclick="removeItem('${produto.codigo}')">
             </td>
+            <td class="produto-valor">
+                <input min="0" value="R$${valorProduto}"  type="text" name="value" placeholder="R$" disabled>
+            </td>
+            <td class="produto-total">
+                <input min="0" value="R$${totalProduto}"  type="text" name="" placeholder="R$" disabled>
+            </td>
         </tr>
     </tbody>
     `;
     tabelaProdutos.innerHTML += corpoTabelaProdutos;
+
+    const valorBaseProduto = `
+        <label for="input-valor">Valor</label>
+        <input id="input-valor" class="valor form-control" value="${produto.valor}" type="text" placeholder="Valor" disabled>
+    `;
+    
+    divValor.innerHTML = valorBaseProduto;
 });
 
 const adicionaProduto = (event) => {
+    // event.preventDefault();
     let produto = document.querySelector('#input-produto');
     console.log(produto)
     console.log(produto.value);
     console.log(quantidade.value);
     let code = produto.getAttribute('data-code');
-
+    let valor = document.querySelector('#input-valor');
+    // console.log(valor);
+    // let total = quantidade.value * valor.value;
+    
     const corpoTabelaProdutos =
         `<tbody>
             <tr class="produto-carrinho" data-code="${code}">
                 <td class="produto">
                     ${produto.value}
                 </td>
-               
-                 <td class="produto-quantidade">
+                <td class="produto-quantidade">
                     <input min="0" value="${quantidade.value}"  type="number" name="" placeholder="Qtd" disabled>
                     <img src="./img/times-solid.svg" class="remove-item" alt="Remover produto" onclick="removeItem('${code}')">
+                </td>
+                <td class="produto-valor">
+                    <input min="0" value="R$${produto.valor}"  type="text" name="" placeholder="R$" disabled>
+                </td>
+                <td class="produto-total">
+                    <input min="0" value="R$${quantidade.value * produto.valor},00"  type="text" name="" placeholder="R$" disabled>
                 </td>
             </tr>
         </tbody>`;
@@ -55,6 +83,7 @@ const adicionaProduto = (event) => {
         codigo: code,
         produto: produto.value,
         quantidade: quantidade.value,
+        valor: "5.00",
     })
     localStorage.setItem('produtosPedido', JSON.stringify(produtosPedido));
     form.reset();
