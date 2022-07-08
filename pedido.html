@@ -81,7 +81,7 @@
 
         <h2>Pagamento</h2>
         <form id="form-pagamento" autocomplete="off" action="#">
-            <div class="produto form-group">
+            <div class="produto form-group" id="forma-pagamento">
                 <div>
                     <label for="input-forma">Forma Pagamento</label>
                     <select id="input-forma-pagamento" class="forma-pagamento form-control" type="text" placeholder="Insira o produto">
@@ -131,19 +131,47 @@
 
 
             <div class="row">
-                <div class="col-lg-12">
-                    <table id="produtos-carrinho">
-                        <thead>
-                            <tr>
-                                <th class="produto-tabela">Produto</th>
-                                <th>Quantidade</th>
-                                <th>Preço</th>
-                                <th>Total</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-
-                    </table>
+                <div class="col-lg-12" >
+                    <div id="container-tabela">
+                        <table id="produtos-carrinho">
+                            <thead>
+                                <tr>
+                                    <th class="produto-tabela">Produto</th>
+                                    <th>Quantidade</th>
+                                    <th>Preço</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="produto-carrinho" id="${produto.codigo}">
+                                    <td class="produto">
+                                        ${produto.produto}
+                                    </td>
+                                
+                                    <td class="produto-quantidade">
+                                        <input min="0" value="${produto.quantidade}"  type="number" name="" placeholder="Qtd" disabled>
+                                    </td>
+                                    <td class="produto-preco">
+                                        <input min="0" value="${produto.preco || 0}"  type="number" name="" placeholder="Qtd" disabled>
+                                    </td>
+                                    <td class="produto-total">
+                                        <input min="0" value="${produto.quantidade * (produto.preco || 0)}"  type="number" name="" placeholder="Qtd" disabled>
+                                    </td>
+                                    <td>
+                                        <img src="./img/times-solid.svg" class="remove-item" alt="Remover produto" onclick="removeItem('${produto.codigo}')">
+                                    </td>
+                                    <td class="produto-valor">
+                                        <input min="0" value="R$${valorProduto}"  type="text" name="value" placeholder="R$" disabled>
+                                    </td>
+                                    <td class="produto-total">
+                                        <input min="0" value="R$${totalProduto}"  type="text" name="" placeholder="R$" disabled>
+                                    </td>
+                                </tr>
+                            </tbody>
+    
+                        </table>
+                    </div>
                 </div>
             </div>
         </form>
