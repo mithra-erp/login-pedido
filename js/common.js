@@ -1,4 +1,5 @@
 const xClientId = 'NDM5ODY1ODQwMDAxMjk=';
+const baseUrlApi = 'https://api.mithra.com.br'
 
 const search = async (search) => {
     let options = {
@@ -9,7 +10,7 @@ const search = async (search) => {
         body: JSON.stringify(search)
     };
 
-    return fetch('https://api.mithra.com.br/mithra/v1/search', options);
+    return fetch(`${baseUrlApi}/mithra/v1/search`, options);
 }
 
 const insert = async (data) => {
@@ -21,7 +22,7 @@ const insert = async (data) => {
         body: JSON.stringify(data)
     };
 
-    return fetch('https://api.mithra.com.br/mithra/v1/template', options);
+    return fetch(`${baseUrlApi}/mithra/v1/template`, options);
 }
 
 // Mostra overlay para chamadas ajax.
@@ -33,4 +34,9 @@ const ShowOverlay = () => {
 // Esconde overlay.
 const HideOverlay = () => {
     $('#overlay').remove();
+}
+
+const currentDate = () => {
+    let today = new Date().toISOString().slice(0, 10);
+    return today.replaceAll('-', '');
 }

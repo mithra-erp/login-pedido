@@ -79,6 +79,24 @@
 
         </form>
 
+        <h2>Pagamento</h2>
+        <form id="form-pagamento" autocomplete="off" action="#">
+            <div class="produto form-group">
+                <div>
+                    <label for="input-forma">Forma Pagamento</label>
+                    <select id="input-forma-pagamento" class="forma-pagamento form-control" type="text" placeholder="Insira o produto">
+                        <option selected disabled>Selecione</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="input-condicao">Condição Pagamento</label>
+                    <select id="input-condicao-pagamento" class="condicao-pagamento form-control" type="text" placeholder="Insira o produto">
+                        <option selected disabled>Selecione</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+
         <h2>Adicionar produto</h2>
         <form id="form-pedido" autocomplete="off" action="#">
             <div class="produto form-group">
@@ -101,7 +119,7 @@
                     </button>
                 </div> -->
                 <div>
-                    <button class="btn btn-lg" onclick="adicionaProduto()">Adicionar produto</button>
+                    <button class="btn btn-lg" id="adiciona-produto-botao">Adicionar produto</button>
                 </div>
             </div>
 
@@ -117,6 +135,9 @@
                             <tr>
                                 <th class="produto-tabela">Produto</th>
                                 <th>Quantidade</th>
+                                <th>Preço</th>
+                                <th>Total</th>
+                                <th></th>
                             </tr>
                         </thead>
 
