@@ -12,6 +12,12 @@ let tabelaProdutos = document.getElementById('produtos-carrinho');
 
 console.log(produtosPedido);
 produtosPedido.forEach(produto => {
+    let divValor = document.querySelector('#div-input-valor');
+
+    console.log(produto.valor);
+    console.log(produto);
+    let valorProduto = produto.valor;
+    let totalProduto = produto.quantidade * valorProduto;
     const corpoTabelaProdutos = `
         <tr class="produto-carrinho" id="${produto.codigo}">
             <td class="produto">
@@ -30,9 +36,22 @@ produtosPedido.forEach(produto => {
             <td>
                 <img src="./img/times-solid.svg" class="remove-item" alt="Remover produto" onclick="removeItem('${produto.codigo}')">
             </td>
+            <td class="produto-valor">
+                <input min="0" value="R$${valorProduto}"  type="text" name="value" placeholder="R$" disabled>
+            </td>
+            <td class="produto-total">
+                <input min="0" value="R$${totalProduto}"  type="text" name="" placeholder="R$" disabled>
+            </td>
         </tr>
     `;
     tabelaProdutos.innerHTML += corpoTabelaProdutos;
+
+    const valorBaseProduto = `
+        <label for="input-valor">Valor</label>
+        <input id="input-valor" class="valor form-control" value="${produto.valor}" type="text" placeholder="Valor" disabled>
+    `;
+    
+    divValor.innerHTML = valorBaseProduto;
 });
 
 document.querySelector("#adiciona-produto-botao").addEventListener('click', (event) => {
@@ -62,6 +81,12 @@ document.querySelector("#adiciona-produto-botao").addEventListener('click', (eve
                 </td>
                 <td>
                     <img src="./img/times-solid.svg" class="remove-item" alt="Remover produto" onclick="removeItem('${code}')">
+                </td>
+                <td class="produto-valor">
+                    <input min="0" value="R$${produto.valor}"  type="text" name="" placeholder="R$" disabled>
+                </td>
+                <td class="produto-total">
+                    <input min="0" value="R$${quantidade.value * produto.valor},00"  type="text" name="" placeholder="R$" disabled>
                 </td>
             </tr>
         </tbody>`;
