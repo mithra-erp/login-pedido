@@ -17,7 +17,7 @@ const validaUsuario = (event) => {
         body: JSON.stringify(raw)
     };
 
-    fetch('https://api.mithra.com.br/mithra/v1/auth', options).then(async response => {
+    fetch(`${baseUrlApi}/mithra/v1/auth`, options).then(async response => {
         if (response.ok) {
             let json = await response.json();
             console.log(json);

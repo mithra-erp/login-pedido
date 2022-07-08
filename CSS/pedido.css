@@ -45,7 +45,19 @@ button.increment-decrement {
 td.produto-quantidade input {
     padding: 0;
     width: 3rem;
+    background: none;
 }
+td.produto-valor input {
+    padding: 0;
+    width: 4.3rem;
+    background: none;
+}
+td.produto-total input {
+    padding: 0;
+    width: 4.3rem;
+    background: none;
+}
+
 
 main h2 {
     border-bottom: 1px solid var(--gray3);
@@ -64,6 +76,17 @@ div.produto.form-group {
     position: relative;
     
 }
+div.cliente.form-group {
+    margin: 1.5rem 0;
+    padding: 1rem 2rem;
+    border: 1px solid var(--gray);
+    width: 100%;
+    /* min-width: 00px; */
+    border-radius: 0.25rem;
+    /* display: block; */
+    /* justify-content: space-between; */
+    /* position: relative; */
+}
 div#input-produtoautocomplete-list.autocomplete-items {
     overflow-y: scroll;
     max-height: 200px;
@@ -71,18 +94,19 @@ div#input-produtoautocomplete-list.autocomplete-items {
     z-index: 1;
 }
 
-.produto label {
+.produto label, .cliente label {
     font-size: 1.2rem;
     display: inline;
     margin: 1rem 0;
     font-weight: 500;
 }
 
-.produto input {
+.produto input, .cliente input {
     margin: 0 0.5rem;
+    width: 100%;
 }
 
-.produto input.form-control {
+.produto input.form-control, .cliente input.form-control {
     margin: 1rem 0;
 }
 
@@ -98,7 +122,7 @@ div.botoes-quantidade {
 
 .produto button.btn.btn-lg {
     font-size: 1rem;
-    margin: 2.1rem 1rem;
+    margin: 2.3rem 0 2.2rem 0;
     border-radius: 0.25rem;
     color: var(--white);
     background: var(--blue-100);
@@ -108,19 +132,35 @@ div.botoes-quantidade {
    
 
 }
+div#botao-pedido {
+    display: flex;
+    justify-content: end;
+    margin: 1.3rem 0;
+}
+div#botao-pedido button.btn.btn-success.btn-lg {
+    font-size: 1.1rem;
+    border-radius: 0.25rem;
+    color: var(--white);
+    /* background: var(--blue-200); */
+    transition: filter 0.2s;
+    height: 2.6rem;
+    /* align-self: end;  */
+}
 
-.produto button.btn.btn-lg:hover {
+.produto button.btn.btn-lg:hover{
     filter: brightness(0.9);
 }
 
-.resumo-carrinho {
-    clear: right;
+img.remove-item {
+    height: 20px;
+    cursor: pointer;
+    text-align: right;
+    /* padding: 2px; */
+    margin-top: -3px;
+    color: white;
+    
 }
 
-table#fechamento-carrinho {
-    float: right;
-    width: 500px;
-}
 
 @media (max-width: 500px) {
     html {
@@ -179,45 +219,11 @@ table#fechamento-carrinho {
         width: 100%;
     }
 
-    button#mais-produtos.btn.btn-lg,
-    button#finalizar-compra.btn.btn-lg {
-        display: block;
+    .produto button.btn.btn-lg {
         width: 100%;
-
     }
-
-    a#texto-finalizar-compra {
-        color: var(--white);
-        text-decoration: none;
-        font-size: 30px;
-    }
-
-    section#forma-pagamento span {
-        font-size: 0.6rem;
-    }
-
-    section#forma-pagamento img {
-        height: 20px;
-    }
-
-    section#forma-pagamento li.nav-item {
-        width: 8rem;
-        overflow-x: hidden;
-    }
-
-    #formas-pagamento a.nav-link {
-        padding: 0.5rem 3.5rem 0.5rem 0;
-    }
-
-    #formas-pagamento li.nav-item:hover {
-        background: none;
-        border: none;
-    }
-
-    section#cartao-credito,
-    section#boleto-bancario,
-    section#pagamento-pix {
-        width: 85%;
+    div#botao-pedido button.btn.btn-success.btn-lg {
+        width: 100%;
     }
 
 }
@@ -241,8 +247,14 @@ table#fechamento-carrinho {
 
 }
 
+@media (min-width:998px) and (max-width: 1200px)  {
+    div.produto.form-group input {
+        width: 90%;
+    }
+}
+
 @media (min-width: 1000px) {
-    div.produto.form-group {
+    div.produto.form-group, div.cliente.form-group {
         display: flex;
     }
 }

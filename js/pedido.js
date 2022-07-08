@@ -1,14 +1,25 @@
 const form = document.querySelector("#form-pedido");
+const inputCgc = document.querySelector("#input-cgc");
+var tabelaPreco = [];
 var produtosArray = [];
 let quantidade = document.querySelector('#input-quantidade');
+let condicaoPagamento = document.querySelector('#input-condicao-pagamento');
+let formaPagamento = document.querySelector('#input-forma-pagamento');
 
 let produtosPedido = JSON.parse(localStorage.getItem('produtosPedido')) || [];
 
 let tabelaProdutos = document.getElementById('produtos-carrinho');
+
+console.log(produtosPedido);
 produtosPedido.forEach(produto => {
+    let divValor = document.querySelector('#div-input-valor');
+
+    console.log(produto.valor);
+    console.log(produto);
+    let valorProduto = produto.valor;
+    let totalProduto = produto.quantidade * valorProduto;
     const corpoTabelaProdutos = `
-        <tbody>
-        <tr class="produto-carrinho">
+        <tr class="produto-carrinho" id="${produto.codigo}">
             <td class="produto">
                 ${produto.produto}
             </td>
@@ -16,28 +27,66 @@ produtosPedido.forEach(produto => {
             <td class="produto-quantidade">
                 <input min="0" value="${produto.quantidade}"  type="number" name="" placeholder="Qtd" disabled>
             </td>
+            <td class="produto-preco">
+                <input min="0" value="${produto.preco || 0}"  type="number" name="" placeholder="Qtd" disabled>
+            </td>
+            <td class="produto-total">
+                <input min="0" value="${produto.quantidade * (produto.preco || 0)}"  type="number" name="" placeholder="Qtd" disabled>
+            </td>
+            <td>
+                <img src="./img/times-solid.svg" class="remove-item" alt="Remover produto" onclick="removeItem('${produto.codigo}')">
+            </td>
+            <td class="produto-valor">
+                <input min="0" value="R$${valorProduto}"  type="text" name="value" placeholder="R$" disabled>
+            </td>
+            <td class="produto-total">
+                <input min="0" value="R$${totalProduto}"  type="text" name="" placeholder="R$" disabled>
+            </td>
         </tr>
-    </tbody>
     `;
     tabelaProdutos.innerHTML += corpoTabelaProdutos;
+
+    const valorBaseProduto = `
+        <label for="input-valor">Valor</label>
+        <input id="input-valor" class="valor form-control" value="${produto.valor}" type="text" placeholder="Valor" disabled>
+    `;
+    
+    divValor.innerHTML = valorBaseProduto;
 });
 
-const adicionaProduto = (event) => {
+document.querySelector("#adiciona-produto-botao").addEventListener('click', (event) => {
+    event.preventDefault();
     let produto = document.querySelector('#input-produto');
     console.log(produto)
     console.log(produto.value);
     console.log(quantidade.value);
     let code = produto.getAttribute('data-code');
 
+    var preco = tabelaPreco.find(item => item.PRODUTO === code);
+    console.log(preco)
     const corpoTabelaProdutos =
         `<tbody>
             <tr class="produto-carrinho" data-code="${code}">
                 <td class="produto">
                     ${produto.value}
                 </td>
-               
-                 <td class="produto-quantidade">
+                <td class="produto-quantidade">
                     <input min="0" value="${quantidade.value}"  type="number" name="" placeholder="Qtd" disabled>
+                </td>
+                <td class="produto-preco">
+                    <input min="0" value="${preco.PRECO}"  type="number" name="" placeholder="Qtd" disabled>
+                </td>
+                <td class="produto-total">
+                    <input min="0" value="${quantidade.value * preco.PRECO}"  type="number" name="" placeholder="Qtd" disabled>
+                </td>
+                <td>
+                    <img src="./img/times-solid.svg" class="remove-item" alt="Remover produto" onclick="removeItem('${code}')">
+                </td>
+                <td class="produto-valor">
+                    <input min="0" value="R$${produto.valor}"  type="text" name="" placeholder="R$" disabled>
+                </td>
+                <td class="produto-total">
+                    <input min="0" value="R$${quantidade.value * produto.valor},00"  type="text" name="" placeholder="R$" disabled>
                 </td>
             </tr>
         </tbody>`;
@@ -46,11 +95,22 @@ const adicionaProduto = (event) => {
     produtosPedido.push({
         codigo: code,
         produto: produto.value,
-        quantidade: quantidade.value,
+        quantidade: parseFloat(quantidade.value),
+        preco: parseFloat(preco.PRECO)
     })
     localStorage.setItem('produtosPedido', JSON.stringify(produtosPedido));
     form.reset();
     produto.focus();
+});
+
+function removeItem(codigoProduto) {
+    let quantidadeProduto = produtosPedido.find(item => item.codigo === codigoProduto);
+    let indiceProduto = produtosPedido.indexOf(quantidadeProduto);
+    produtosPedido.splice(indiceProduto, 1);
+    localStorage.setItem("produtos", JSON.stringify(produtosPedido));
+
+    document.getElementById(`${codigoProduto}`).remove();
+    //atualizaTotais();
 }
 
 //document.addEventListener("DOMContentLoaded", event => {
@@ -60,7 +120,7 @@ const onContentLoaded = (event) => {
 
     let search = {
         area: "PRODUT",
-        fields: [ "CODIGO", "DESCRICAO"],
+        fields: ["CODIGO", "DESCRICAO"],
         search: [
             {
                 field: "STATUS",
@@ -69,10 +129,6 @@ const onContentLoaded = (event) => {
             }
         ]
     }
-    
-    navigator.serviceWorker.controller.postMessage({
-        type: 'CHECK_TOKEN'
-    })
 
     let options = {
         method: 'post',
@@ -82,7 +138,7 @@ const onContentLoaded = (event) => {
         body: JSON.stringify(search)
     };
 
-    fetch('https://api.mithra.com.br/mithra/v1/search', options).then(async response => {
+    fetch(`${baseUrlApi}/mithra/v1/search`, options).then(async response => {
         if (response.ok) {
             json = await response.json()
             let produtosArray = json.data
@@ -98,7 +154,193 @@ const onContentLoaded = (event) => {
     })
 };
 
-document.addEventListener("DOMContentLoaded", onContentLoaded);
+const buscaTabela = (tabela) => {
+    let data = {
+        area: "ITETAB",
+        fields: ["PRODUTO", "PRECO"],
+        search: [
+            {
+                field: "CHAVE",
+                operation: "EQUAL_TO",
+                value: tabela
+            }
+        ]
+    }
+    ShowOverlay();
+    search(data).then(async response => {
+        if (response.ok) {
+            let json = await response.json()
+            console.log(json);
+            tabelaPreco = json.data;
+        } else {
+            if (response.status == 401) {
+            }
+        }
+        HideOverlay();
+    })
+}
+
+
+const buscaCondicoes = () => {
+    let data = {
+        area: "CONDPG",
+        fields: ["CODIGO", "DESCRICAO"]
+    }
+
+    ShowOverlay();
+    search(data).then(async response => {
+        if (response.ok) {
+            let json = await response.json()
+            if (json.success) {
+                console.log(json);
+                for(const condicao of json.data) {
+                    let opt = document.createElement('option');
+                    opt.value = condicao.CODIGO;
+                    opt.innerHTML = condicao.DESCRICAO;
+                    condicaoPagamento.appendChild(opt);
+                }
+            }
+        } else {
+            if (response.status == 401) {
+            }
+        }
+        HideOverlay();
+    })
+}
+
+const buscaFormasPagamento = () => {
+    let data = {
+        area: "FORMPG",
+        fields: ["CODIGO", "DESCRICAO"]
+    }
+
+    ShowOverlay();
+    search(data).then(async response => {
+        if (response.ok) {
+            let json = await response.json()
+            if (json.success) {
+                console.log(json);
+                for(const condicao of json.data) {
+                    let opt = document.createElement('option');
+                    opt.value = condicao.CODIGO;
+                    opt.innerHTML = condicao.DESCRICAO;
+                    formaPagamento.appendChild(opt);
+                }
+            }
+        } else {
+            if (response.status == 401) {
+            }
+        }
+        HideOverlay();
+    })
+}
+
+
+inputCgc.addEventListener('focusout', (event) => {
+    if (inputCgc.value.length < 11) return;
+
+    let data = {
+        area: "CLIENT",
+        fields: ["CODIGO", "NOME", "ENDERECO", "NUMERO", "BAIRRO", "CEP", "MUNICIPIO", "TELEFO", "TABELA"],
+        search: [
+            {
+                field: "CGC",
+                operation: "EQUAL_TO",
+                value: inputCgc.value
+            }
+        ]
+    }
+
+    ShowOverlay();
+    search(data).then(async response => {
+        HideOverlay();
+
+        if (response.ok) {
+            let json = await response.json()
+            if (json.success) {
+                let client = json.data;
+
+                if (client.length > 0) {
+                    client = client[0];
+                    document.querySelector("#input-codigo-cliente").value = client.CODIGO;
+                    document.querySelector("#input-nome").value = client.NOME;
+                    document.querySelector("#input-endereco").value = client.ENDERECO;
+                    document.querySelector("#input-numero").value = client.NUMERO;
+                    document.querySelector("#input-bairro").value = client.BAIRRO;
+                    document.querySelector("#input-cep").value = client.CEP;
+                    document.querySelector("#input-cidade").value = client.MUNICIPIO;
+                    document.querySelector("#input-telefone").value = client.TELEFO;
+
+                    buscaTabela(client.TABELA);
+                }
+            }
+        } else {
+            if (response.status == 401) {
+            }
+        }
+    })
+});
+
+document.querySelector("#finaliza-pedido-botao").addEventListener('click', (event) => {
+    ShowOverlay();
+    let itens = [];
+    let ordem = 0;
+    for (const item of produtosPedido) {
+        itens.push({
+            ORDEM: (++ordem).toString(),
+            PRODUTO: item.codigo,
+            QUANT: item.quantidade.toString(),
+            VALUNIT: item.preco.toString(),
+            TOTAL: (item.preco * item.quantidade).toString(),
+            INTEGR: "5102.21",
+            ARMAZEM: "01"
+        });
+    }
+
+    const sum = itens.reduce((accumulator, object) => {
+        return accumulator + parseFloat(object.TOTAL);
+    }, 0);
+
+    const qtd = itens.reduce((accumulator, object) => {
+        return accumulator + parseFloat(object.QUANT);
+    }, 0);
+
+    let data = [{
+        area: "CABPDV",
+        data: [{
+            CLIENTE: document.querySelector("#input-codigo-cliente").value,
+            VENDEDOR: "",
+            CONDICAO: "001",
+            FORMPG: "001",
+            EMISSAO: currentDate(),
+            DATAINC: currentDate(),
+            TIPO: "P",
+            STATUS: "B",
+            FLAG: "A",
+            FILIAL: "0101",
+            TABELA: "1",
+            QTDTOT: qtd.toString(),
+            VALOR: sum.toString(),
+            VALBRUT: sum.toString(),
+            VALMERC: sum.toString(),
+            ITEPDV: itens
+        }]
+    }];
+
+    console.log(JSON.stringify(data));
+
+    insert(data).then(async response => {
+
+        if (response.ok) {
+            let json = await response.json();
+            if (json.success) {
+                let chave = json.data[0];
+            }
+        }
+        HideOverlay();
+    });;
+});
+
 function autocomplete(inp, arr) {
     /*the autocomplete function takes two arguments,
     the text field element and an array of possible autocompleted values:*/
@@ -198,3 +440,7 @@ function autocomplete(inp, arr) {
         closeAllLists(e.target);
     });
 }
+
+buscaCondicoes();
+buscaFormasPagamento();
+document.addEventListener("DOMContentLoaded", onContentLoaded);

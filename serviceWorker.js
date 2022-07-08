@@ -43,7 +43,7 @@ self.addEventListener('message', function(event) {
 // Helper function to add the auth header if the oubound request matches the whitelists
 const addAuthHeader = function (event) {
     destURL = new URL(event.request.url);
-    console.log(destURL)
+    
     if (whitelistedOrigins.includes(destURL.origin) && whitelistedPathRegex.test(destURL.pathname)) {
         const modifiedHeaders = new Headers(event.request.headers);
         if (token) {
