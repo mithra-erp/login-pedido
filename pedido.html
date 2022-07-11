@@ -36,7 +36,7 @@
         <h2>Cliente</h2>
         <form id="form-cliente" autocomplete="off" action="#">
             <div class="cliente form-group">
-                <input type="hidden" id="input-codigo-cliente"/>
+                <input type="hidden" id="input-codigo-cliente" />
                 <div class="col-lg-6">
                     <div>
                         <label for="input-cgc">CPF OU CNPJ</label>
@@ -54,7 +54,7 @@
                         <label for="input-numero">Numero</label>
                         <input id="input-numero" class="numero form-control" type="text" placeholder="Numero">
                     </div>
-                    
+
                 </div>
                 <div class="col-lg-6">
                     <div>
@@ -74,7 +74,7 @@
                         <input id="input-telefone" class="telefone form-control" type="text" placeholder="Telefone">
                     </div>
                 </div>
-                
+
             </div>
 
         </form>
@@ -84,13 +84,15 @@
             <div class="produto form-group" id="forma-pagamento">
                 <div>
                     <label for="input-forma">Forma Pagamento</label>
-                    <select id="input-forma-pagamento" class="forma-pagamento form-control" type="text" placeholder="Insira o produto">
+                    <select id="input-forma-pagamento" class="forma-pagamento form-control" type="text"
+                        placeholder="Insira o produto">
                         <option selected disabled>Selecione</option>
                     </select>
                 </div>
                 <div>
                     <label for="input-condicao">Condição Pagamento</label>
-                    <select id="input-condicao-pagamento" class="condicao-pagamento form-control" type="text" placeholder="Insira o produto">
+                    <select id="input-condicao-pagamento" class="condicao-pagamento form-control" type="text"
+                        placeholder="Insira o produto">
                         <option selected disabled>Selecione</option>
                     </select>
                 </div>
@@ -111,6 +113,8 @@
 
                 </div>
                 <div id="div-input-valor">
+                    <label for="input-valor">Valor</label>
+                    <input id="input-valor" class="valor form-control" value="0" type="number" placeholder="Valor" disabled>
                 </div>
                 <!-- <div class="botoes-quantidade">
                     <button type="button" class="increment-decrement" onclick="somaQuantidade(-1, '${codigoProduto}')"
@@ -131,7 +135,7 @@
 
 
             <div class="row">
-                <div class="col-lg-12" >
+                <div class="col-lg-12">
                     <div id="container-tabela">
                         <table id="produtos-carrinho">
                             <thead>
@@ -143,7 +147,7 @@
                                     <th></th>
                                 </tr>
                             </thead>
-    
+
                         </table>
                     </div>
                 </div>
