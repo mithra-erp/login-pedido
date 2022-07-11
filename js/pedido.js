@@ -2,22 +2,18 @@ const form = document.querySelector("#form-pedido");
 const inputCgc = document.querySelector("#input-cgc");
 var tabelaPreco = [];
 var produtosArray = [];
-let quantidade = document.querySelector('#input-quantidade');
-let condicaoPagamento = document.querySelector('#input-condicao-pagamento');
-let formaPagamento = document.querySelector('#input-forma-pagamento');
+const quantidade = document.querySelector('#input-quantidade');
+const condicaoPagamento = document.querySelector('#input-condicao-pagamento');
+const formaPagamento = document.querySelector('#input-forma-pagamento');
+const produto = document.querySelector('#input-produto');
+const valorProduto = document.querySelector('#input-valor');
 
 let produtosPedido = JSON.parse(localStorage.getItem('produtosPedido')) || [];
 
 let tabelaProdutos = document.getElementById('produtos-carrinho');
 
-console.log(produtosPedido);
 produtosPedido.forEach(produto => {
-    let divValor = document.querySelector('#div-input-valor');
-
-    console.log(produto.valor);
-    console.log(produto);
-    let valorProduto = produto.valor;
-    let totalProduto = produto.quantidade * valorProduto;
+    
     const corpoTabelaProdutos = `
         <tr class="produto-carrinho" id="${produto.codigo}">
             <td class="produto">
@@ -36,34 +32,21 @@ produtosPedido.forEach(produto => {
             <td>
                 <img src="./img/times-solid.svg" class="remove-item" alt="Remover produto" onclick="removeItem('${produto.codigo}')">
             </td>
-            <td class="produto-valor">
-                <input min="0" value="R$${valorProduto}"  type="text" name="value" placeholder="R$" disabled>
-            </td>
-            <td class="produto-total">
-                <input min="0" value="R$${totalProduto}"  type="text" name="" placeholder="R$" disabled>
-            </td>
         </tr>
     `;
     tabelaProdutos.innerHTML += corpoTabelaProdutos;
-
-    const valorBaseProduto = `
-        <label for="input-valor">Valor</label>
-        <input id="input-valor" class="valor form-control" value="${produto.valor}" type="text" placeholder="Valor" disabled>
-    `;
-    
-    divValor.innerHTML = valorBaseProduto;
 });
 
 document.querySelector("#adiciona-produto-botao").addEventListener('click', (event) => {
     event.preventDefault();
-    let produto = document.querySelector('#input-produto');
-    console.log(produto)
-    console.log(produto.value);
-    console.log(quantidade.value);
+    let precoProduto = 0;
     let code = produto.getAttribute('data-code');
+    let preco = tabelaPreco.find(item => item.PRODUTO === code);
 
-    var preco = tabelaPreco.find(item => item.PRODUTO === code);
-    console.log(preco)
+    if (preco != null && preco != 'undefined') {
+        precoProduto = preco.PRECO;
+    }
+    
     const corpoTabelaProdutos =
         `<tbody>
             <tr class="produto-carrinho" data-code="${code}">
@@ -74,19 +57,13 @@ document.querySelector("#adiciona-produto-botao").addEventListener('click', (eve
                     <input min="0" value="${quantidade.value}"  type="number" name="" placeholder="Qtd" disabled>
                 </td>
                 <td class="produto-preco">
-                    <input min="0" value="${preco.PRECO}"  type="number" name="" placeholder="Qtd" disabled>
+                    <input min="0" value="${precoProduto}"  type="number" name="" placeholder="Qtd" disabled>
                 </td>
                 <td class="produto-total">
-                    <input min="0" value="${quantidade.value * preco.PRECO}"  type="number" name="" placeholder="Qtd" disabled>
+                    <input min="0" value="${quantidade.value * precoProduto}"  type="number" name="" placeholder="Qtd" disabled>
                 </td>
                 <td>
                     <img src="./img/times-solid.svg" class="remove-item" alt="Remover produto" onclick="removeItem('${code}')">
-                </td>
-                <td class="produto-valor">
-                    <input min="0" value="R$${produto.valor}"  type="text" name="" placeholder="R$" disabled>
-                </td>
-                <td class="produto-total">
-                    <input min="0" value="R$${quantidade.value * produto.valor},00"  type="text" name="" placeholder="R$" disabled>
                 </td>
             </tr>
         </tbody>`;
@@ -96,7 +73,7 @@ document.querySelector("#adiciona-produto-botao").addEventListener('click', (eve
         codigo: code,
         produto: produto.value,
         quantidade: parseFloat(quantidade.value),
-        preco: parseFloat(preco.PRECO)
+        preco: precoProduto
     })
     localStorage.setItem('produtosPedido', JSON.stringify(produtosPedido));
     form.reset();
@@ -236,6 +213,18 @@ const buscaFormasPagamento = () => {
 }
 
 
+produto.addEventListener('focusout', (event) => {
+    let precoProduto = 0;
+    let code = produto.getAttribute('data-code');
+    let preco = tabelaPreco.find(item => item.PRODUTO === code);
+
+    if (preco != null && preco != 'undefined') {
+        precoProduto = preco.PRECO;
+    }
+
+    valorProduto.value = precoProduto;
+});
+
 inputCgc.addEventListener('focusout', (event) => {
     if (inputCgc.value.length < 11) return;
 
@@ -282,6 +271,13 @@ inputCgc.addEventListener('focusout', (event) => {
 });
 
 document.querySelector("#finaliza-pedido-botao").addEventListener('click', (event) => {
+    let codigoCliente = document.querySelector("#input-codigo-cliente").value;
+
+    if (codigoCliente === '') {
+        alert('Informe o cliente!');
+        return;
+    }
+    
     ShowOverlay();
     let itens = [];
     let ordem = 0;
@@ -308,10 +304,10 @@ document.querySelector("#finaliza-pedido-botao").addEventListener('click', (even
     let data = [{
         area: "CABPDV",
         data: [{
-            CLIENTE: document.querySelector("#input-codigo-cliente").value,
+            CLIENTE: codigoCliente,
             VENDEDOR: "",
-            CONDICAO: "001",
-            FORMPG: "001",
+            CONDICAO: condicaoPagamento.value,
+            FORMPG: formaPagamento.value,
             EMISSAO: currentDate(),
             DATAINC: currentDate(),
             TIPO: "P",
