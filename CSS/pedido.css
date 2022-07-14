@@ -3,35 +3,6 @@ main {
     margin-bottom: 2rem;
 }
 
-table {
-    width: 100%;
-    border-spacing: 0 0.5rem;
-    position: relative;
-}
-/* tbody {
-    position: absolute;
-    z-index: 2;
-    overflow: scroll;
-} */
-
-th {
-    padding: 1.2rem 2rem;
-    line-height: 1.5rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    border: 1px solid var(--gray3);
-    background: var(--blue-100);
-    color: var(--white);
-
-}
-
-td {
-    padding: 1rem 2rem;
-    color: var(--black);
-    border-radius: 0.25rem;
-    border: 1px solid var(--blue-100);
-}
-
 button.increment-decrement {
     color: var(--white);
     background: var(--blue-100);
@@ -40,7 +11,7 @@ button.increment-decrement {
     border-radius: 0.5rem;
     padding: 0.2rem;
 }
-
+.nobr { white-space: nowrap }
 .remove-item {
     height: 20px;
     cursor: pointer;
@@ -49,20 +20,14 @@ button.increment-decrement {
     margin-top: -3px;
 }
 
-td.produto-quantidade input {
-    padding: 0;
-    width: 3rem;
-    background: none;
+#form-pagamento select {
+    min-width: 300px;
 }
-td.produto-valor input {
+
+#produtos-carrinho input, tfoot td {
     padding: 0;
-    width: 4.3rem;
     background: none;
-}
-td.produto-total input {
-    padding: 0;
-    width: 4.3rem;
-    background: none;
+    text-align: end;
 }
 
 
@@ -88,7 +53,7 @@ div.produto.form-group {
     display: flex;
     justify-content: space-around;
 }
-div.cliente.form-group {
+div.form-group {
     margin: 1.5rem 0;
     padding: 1rem 2rem;
     border: 1px solid var(--gray);

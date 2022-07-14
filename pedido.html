@@ -27,6 +27,7 @@
     <link rel="stylesheet" type="text/css" href="./CSS/loader.css">
     <link rel="stylesheet" href="./CSS/pedido.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <title>Pedido</title>
 </head>
 
@@ -79,6 +80,18 @@
 
         </form>
 
+        <h2>Vendedor</h2>
+        <form id="form-vendedor" autocomplete="off" action="#">
+            <div class="vendedor form-group">
+                <div class="col-lg-12">
+                    <div>
+                        <label for="input-vendedor">Nome Vendedor</label>
+                        <input id="input-vendedor" class="vendedor form-control" type="text" placeholder="">
+                    </div>
+                </div>
+            </div>
+        </form>
+
         <h2>Pagamento</h2>
         <form id="form-pagamento" autocomplete="off" action="#">
             <div class="produto form-group" id="forma-pagamento">
@@ -86,14 +99,14 @@
                     <label for="input-forma">Forma Pagamento</label>
                     <select id="input-forma-pagamento" class="forma-pagamento form-control" type="text"
                         placeholder="Insira o produto">
-                        <option selected disabled>Selecione</option>
+                        <option selected disabled value="">Selecione</option>
                     </select>
                 </div>
                 <div>
                     <label for="input-condicao">Condição Pagamento</label>
                     <select id="input-condicao-pagamento" class="condicao-pagamento form-control" type="text"
                         placeholder="Insira o produto">
-                        <option selected disabled>Selecione</option>
+                        <option selected disabled value="">Selecione</option>
                     </select>
                 </div>
             </div>
@@ -114,7 +127,7 @@
                 </div>
                 <div id="div-input-valor">
                     <label for="input-valor">Valor</label>
-                    <input id="input-valor" class="valor form-control" value="0" type="number" placeholder="Valor" disabled>
+                    <input id="input-valor" class="valor form-control" value="0" type="number" placeholder="Valor">
                 </div>
                 <!-- <div class="botoes-quantidade">
                     <button type="button" class="increment-decrement" onclick="somaQuantidade(-1, '${codigoProduto}')"
@@ -136,24 +149,33 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <div id="container-tabela">
-                        <table id="produtos-carrinho">
+                    <div id="container-tabela" class="table-responsive">
+                        <table id="produtos-carrinho" class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th class="produto-tabela">Produto</th>
-                                    <th>Quantidade</th>
-                                    <th>Preço</th>
-                                    <th>Total</th>
-                                    <th></th>
+                                    <th scope="col">Produto</th>
+                                    <th scope="col">Quantidade</th>
+                                    <th scope="col">Preço</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
+                            <tbody>
 
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th scope="row" colspan="3">Total</th>
+                                    <td id="total-pedido">0,00</td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
             </div>
         </form>
     </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
     <script src="./js/common.js"></script>
     <script src="./js/pedido.js"></script>
 </body>
