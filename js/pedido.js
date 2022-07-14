@@ -7,89 +7,85 @@ const condicaoPagamento = document.querySelector('#input-condicao-pagamento');
 const formaPagamento = document.querySelector('#input-forma-pagamento');
 const produto = document.querySelector('#input-produto');
 const valorProduto = document.querySelector('#input-valor');
+const totalPedido = document.querySelector('#total-pedido');
 
-let produtosPedido = JSON.parse(localStorage.getItem('produtosPedido')) || [];
+let produtosPedido = JSON.parse(sessionStorage.getItem('produtosPedido')) || [];
 
-let tabelaProdutos = document.getElementById('produtos-carrinho');
-
-produtosPedido.forEach(produto => {
-    
-    const corpoTabelaProdutos = `
-        <tr class="produto-carrinho" id="${produto.codigo}">
-            <td class="produto">
-                ${produto.produto}
-            </td>
-        
-            <td class="produto-quantidade">
-                <input min="0" value="${produto.quantidade}"  type="number" name="" placeholder="Qtd" disabled>
-            </td>
-            <td class="produto-preco">
-                <input min="0" value="${produto.preco || 0}"  type="number" name="" placeholder="Qtd" disabled>
-            </td>
-            <td class="produto-total">
-                <input min="0" value="${produto.quantidade * (produto.preco || 0)}"  type="number" name="" placeholder="Qtd" disabled>
-            </td>
-            <td>
-                <img src="./img/times-solid.svg" class="remove-item" alt="Remover produto" onclick="removeItem('${produto.codigo}')">
-            </td>
-        </tr>
-    `;
-    tabelaProdutos.innerHTML += corpoTabelaProdutos;
-});
+let tabelaProdutos = document.querySelector('#produtos-carrinho tbody');
 
 document.querySelector("#adiciona-produto-botao").addEventListener('click', (event) => {
     event.preventDefault();
-    let precoProduto = 0;
     let code = produto.getAttribute('data-code');
-    let preco = tabelaPreco.find(item => item.PRODUTO === code);
+    let precoProduto = parseFloat(valorProduto.value.replace(',', '.'));
 
-    if (preco != null && preco != 'undefined') {
-        precoProduto = preco.PRECO;
-    }
-    
+    let index = Math.max(...produtosPedido.map(e => e.index));
+    if (index == null || isNaN(index) || !isFinite(index)) index = 0;
+
+    index++;
+
+    console.log(index);
+
     const corpoTabelaProdutos =
         `<tbody>
-            <tr class="produto-carrinho" data-code="${code}">
-                <td class="produto">
+            <tr class="produto-carrinho" data-code="${code}" data-id="${index}">
+                <td class="produto nobr" >
                     ${produto.value}
                 </td>
                 <td class="produto-quantidade">
                     <input min="0" value="${quantidade.value}"  type="number" name="" placeholder="Qtd" disabled>
                 </td>
                 <td class="produto-preco">
-                    <input min="0" value="${precoProduto}"  type="number" name="" placeholder="Qtd" disabled>
+                    <input min="0" value="${precoProduto.toLocalCurrency()}"  type="text" name="" placeholder="Qtd" disabled>
                 </td>
                 <td class="produto-total">
-                    <input min="0" value="${quantidade.value * precoProduto}"  type="number" name="" placeholder="Qtd" disabled>
+                    <input min="0" value="${parseFloat(quantidade.value * precoProduto).toLocalCurrency()}"  type="text" name="" placeholder="Qtd" disabled>
                 </td>
                 <td>
-                    <img src="./img/times-solid.svg" class="remove-item" alt="Remover produto" onclick="removeItem('${code}')">
+                    <button class="btn btn-danger" onclick="removeItemClick(event)">
+                        <i class="fa fa-trash" aria-hidden="true" style="pointer-events: none;"></i>
+                    </button>
                 </td>
             </tr>
         </tbody>`;
 
     tabelaProdutos.innerHTML += corpoTabelaProdutos;
+
     produtosPedido.push({
+        index: index,
         codigo: code,
         produto: produto.value,
         quantidade: parseFloat(quantidade.value),
         preco: precoProduto
     })
-    localStorage.setItem('produtosPedido', JSON.stringify(produtosPedido));
+    sessionStorage.setItem('produtosPedido', JSON.stringify(produtosPedido));
+    atualizaTotal();
     form.reset();
     produto.focus();
 });
 
-function removeItem(codigoProduto) {
-    let quantidadeProduto = produtosPedido.find(item => item.codigo === codigoProduto);
-    let indiceProduto = produtosPedido.indexOf(quantidadeProduto);
-    produtosPedido.splice(indiceProduto, 1);
-    localStorage.setItem("produtos", JSON.stringify(produtosPedido));
-
-    document.getElementById(`${codigoProduto}`).remove();
-    //atualizaTotais();
+const removeItemClick = (event) => {
+    event.preventDefault();
+    var targetElement = event.target || event.srcElement;
+    let _id = targetElement.parentElement.parentElement.getAttribute('data-id');
+    removeItem(parseInt(_id), targetElement.parentElement.parentElement);
 }
 
+function removeItem(_id, parentElement) {
+    produtosPedido = produtosPedido.filter(item => item.index !== _id);
+    console.log(produtosPedido)
+    sessionStorage.setItem("produtosPedido", JSON.stringify(produtosPedido));
+
+    parentElement.remove();
+    atualizaTotal();
+}
+
+const atualizaTotal = () => {
+    let total = produtosPedido.reduce((accumulator, object) => {
+        return accumulator + (object.quantidade * object.preco);
+    }, 0);
+    console.log(total.toLocalCurrency())
+    totalPedido.innerHTML = total.toLocalCurrency();
+}
 //document.addEventListener("DOMContentLoaded", event => {
 
 const onContentLoaded = (event) => {
@@ -129,6 +125,7 @@ const onContentLoaded = (event) => {
             }
         }
     })
+    atualizaTotal();
 };
 
 const buscaTabela = (tabela) => {
@@ -161,7 +158,12 @@ const buscaTabela = (tabela) => {
 const buscaCondicoes = () => {
     let data = {
         area: "CONDPG",
-        fields: ["CODIGO", "DESCRICAO"]
+        fields: ["CODIGO", "DESCRICAO"],
+        search: [{
+            field: "CODIGO",
+            operation: "GREATER_THAN",
+            value: ''
+        }]
     }
 
     ShowOverlay();
@@ -170,7 +172,7 @@ const buscaCondicoes = () => {
             let json = await response.json()
             if (json.success) {
                 console.log(json);
-                for(const condicao of json.data) {
+                for (const condicao of json.data) {
                     let opt = document.createElement('option');
                     opt.value = condicao.CODIGO;
                     opt.innerHTML = condicao.DESCRICAO;
@@ -197,7 +199,7 @@ const buscaFormasPagamento = () => {
             let json = await response.json()
             if (json.success) {
                 console.log(json);
-                for(const condicao of json.data) {
+                for (const condicao of json.data) {
                     let opt = document.createElement('option');
                     opt.value = condicao.CODIGO;
                     opt.innerHTML = condicao.DESCRICAO;
@@ -261,8 +263,23 @@ inputCgc.addEventListener('focusout', (event) => {
                     document.querySelector("#input-telefone").value = client.TELEFO;
 
                     buscaTabela(client.TABELA);
+                    return;
                 }
             }
+
+            $.confirm({
+                title: 'Erro!',
+                content: 'Cliente não cadastrado!',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    success: {
+                        text: 'Ok',
+                        btnClass: 'btn-red',
+                        action: function () { }
+                    }
+                }
+            });
         } else {
             if (response.status == 401) {
             }
@@ -271,13 +288,35 @@ inputCgc.addEventListener('focusout', (event) => {
 });
 
 document.querySelector("#finaliza-pedido-botao").addEventListener('click', (event) => {
+    event.preventDefault();
     let codigoCliente = document.querySelector("#input-codigo-cliente").value;
+    let nomeVendedor = document.querySelector('#input-vendedor').value;
 
     if (codigoCliente === '') {
-        alert('Informe o cliente!');
+        errorAlert('Erro', 'Informe o cliente!');
         return;
     }
-    
+
+    if (nomeVendedor === '') {
+        errorAlert('Erro', 'Informe o vendedor!');
+        return;
+    }
+
+    if (condicaoPagamento.value === '') {
+        errorAlert('Erro', 'Informe a Condição de Pagamento');
+        return;
+    }
+
+    if (formaPagamento.value === '') {
+        errorAlert('Erro', 'Informe a Forma de Pagamento');
+        return;
+    }
+
+    if (produtosPedido.length == 0) {
+        errorAlert('Erro', 'Pedido sem itens');
+        return;
+    }
+
     ShowOverlay();
     let itens = [];
     let ordem = 0;
@@ -319,6 +358,7 @@ document.querySelector("#finaliza-pedido-botao").addEventListener('click', (even
             VALOR: sum.toString(),
             VALBRUT: sum.toString(),
             VALMERC: sum.toString(),
+            OBS_INT: `VENDEDOR: ${nomeVendedor.toUpperCase()}`,
             ITEPDV: itens
         }]
     }];
@@ -329,9 +369,30 @@ document.querySelector("#finaliza-pedido-botao").addEventListener('click', (even
 
         if (response.ok) {
             let json = await response.json();
+            console.log(json)
             if (json.success) {
                 let chave = json.data[0];
+
+                $.confirm({
+                    title: 'Sucesso!',
+                    content: 'Pedido salvo!',
+                    type: 'green',
+                    typeAnimated: true,
+                    buttons: {
+                        success: {
+                            text: 'Ok',
+                            btnClass: 'btn-green',
+                            action: function () {
+                                document.location.reload();
+                            }
+                        }
+                    }
+                });
+                sessionStorage.clear();
             }
+        } else {
+            let texto = await response.text();
+            console.log(texto);
         }
         HideOverlay();
     });;
@@ -377,6 +438,15 @@ function autocomplete(inp, arr) {
                 });
                 a.appendChild(b);
             }
+        }
+    });
+    inp.addEventListener('focusout', function (e) {
+        var x = document.getElementById(this.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        e.preventDefault();
+        if (currentFocus > -1) {
+            /*and simulate a click on the "active" item:*/
+            if (x) x[currentFocus].click();
         }
     });
     /*execute a function presses a key on the keyboard:*/
@@ -439,4 +509,34 @@ function autocomplete(inp, arr) {
 
 buscaCondicoes();
 buscaFormasPagamento();
+
+
+produtosPedido.forEach(produto => {
+
+    const corpoTabelaProdutos = `
+        <tr class="produto-carrinho" data-code="${produto.codigo}" data-id="${produto.index}">
+            <td class="produto">
+                ${produto.produto}
+            </td>
+            <td class="produto-quantidade">
+                <input min="0" value="${produto.quantidade}"  type="number" name="" placeholder="Qtd" disabled>
+            </td>
+            <td class="produto-preco">
+                <input min="0" value="${parseFloat(produto.preco).toLocalCurrency()}"  type="text" name="" placeholder="Qtd" disabled>
+            </td>
+            <td class="produto-total">
+                <input min="0" value="${parseFloat(produto.quantidade * (produto.preco || 0)).toLocalCurrency()}"  type="text" name="" placeholder="Qtd" disabled>
+            </td>
+            <td>
+                <button class="btn btn-danger" onclick="removeItemClick(event)">
+                    <i class="fa fa-trash" aria-hidden="true" style="pointer-events: none;"></i>
+                </button>
+            </td>
+        </tr>
+    `;
+    tabelaProdutos.innerHTML += corpoTabelaProdutos;
+    
+});
+
+
 document.addEventListener("DOMContentLoaded", onContentLoaded);

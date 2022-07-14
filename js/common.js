@@ -40,3 +40,31 @@ const currentDate = () => {
     let today = new Date().toISOString().slice(0, 10);
     return today.replaceAll('-', '');
 }
+
+const errorAlert = (title, message) => {
+    $.confirm({
+        title: title,
+        content: message,
+        type: 'red',
+        typeAnimated: true,
+        buttons: {
+            ok: {
+                text: 'Ok',
+                btnClass: 'btn-red',
+                action: function () {
+                }
+            }
+        }
+    });
+}
+
+Number.prototype.toLocalCurrency = function () {
+    return this.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+}
+
+HTMLCollection.prototype.last = function () {
+    return this[this.length - 1];
+}
