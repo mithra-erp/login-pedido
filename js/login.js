@@ -21,12 +21,21 @@ const validaUsuario = (event) => {
         if (response.ok) {
             let json = await response.json();
             console.log(json);
-            navigator.serviceWorker.controller.postMessage({
-                type: 'SET_TOKEN',
-                token: json.access_token
+
+            navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
+                // Let's see if you have a subscription already
+                return serviceWorkerRegistration.pushManager.getSubscription();
+            }).then((subscription) => {
+                if (!subscription) {
+                    // You do not have subscription
+                }
+
+                navigator.serviceWorker.controller.postMessage({
+                    type: 'SET_TOKEN',
+                    token: json.access_token
+                })
+                window.location.href = "pedido.html";
             })
-            //sessionStorage.setItem('jwt', json.access_token);
-            window.location.href = "pedido.html"
         }
     })
 }
