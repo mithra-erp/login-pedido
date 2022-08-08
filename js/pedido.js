@@ -267,6 +267,8 @@ inputCgc.addEventListener('focusout', (event) => {
                 }
             }
 
+            inputCgc.value = '';
+            
             $.confirm({
                 title: 'Erro!',
                 content: 'Cliente não cadastrado!',
