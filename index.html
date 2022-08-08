@@ -54,7 +54,7 @@
             window.addEventListener('load', function () {
                 navigator.serviceWorker
                     .register('serviceWorker.js', {
-                        scope: "/"
+                        scope: "/login-pedido/"
                     })
                     .then(_ => navigator.serviceWorker.ready)
                     .then(_ => console.log('ServiceWorker registration succesful!'))
