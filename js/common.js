@@ -1,5 +1,6 @@
 const xClientId = 'NDM5ODY1ODQwMDAxMjk=';
 const baseUrlApi = 'https://api.mithra.com.br'
+const fetch = window.fetch;
 
 const search = async (search) => {
     let options = {
