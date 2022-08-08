@@ -20,7 +20,6 @@ const validaUsuario = (event) => {
     fetch(`${baseUrlApi}/mithra/v1/auth`, options).then(async response => {
         if (response.ok) {
             let json = await response.json();
-            console.log(json);
 
             navigator.serviceWorker.ready.then(function (serviceWorkerRegistration) {
                 // Let's see if you have a subscription already
