@@ -53,7 +53,7 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {
                 navigator.serviceWorker
-                    .register('serviceWorker.js', {
+                    .register('/serviceWorker.js', {
                         scope: "/login-pedido/"
                     })
                     .then(_ => navigator.serviceWorker.ready)
