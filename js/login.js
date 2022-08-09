@@ -39,5 +39,5 @@ const validaUsuario = (event) => {
             let json = await response.json();
             alert(json.message);
         }
-    })
+    }).catch(error => alert(error));
 }
