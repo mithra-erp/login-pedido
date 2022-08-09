@@ -35,6 +35,9 @@ const validaUsuario = (event) => {
                 })
                 window.location.href = "pedido.html";
             })
+        } else {
+            let json = await response.json();
+            alert(json.message);
         }
-    })
+    }).catch(error => alert(error));
 }
