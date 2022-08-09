@@ -54,9 +54,9 @@
             window.addEventListener('load', function () {
                 navigator.serviceWorker
                     .register('serviceWorker.js')
-                    .then(_ => console.log(navigator.serviceWorker.ready))
+                    .then(_ => navigator.serviceWorker.ready)
                     .then(_ => console.log('ServiceWorker registration succesful!'))
-                    .catch(err => console.log(`Service Worker registration failed ${err}`));
+                    .catch(err => alert(`Service Worker registration failed ${err}`));
             });
         } else {
             alert('Navegador incompativel')
