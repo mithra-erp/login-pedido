@@ -49,19 +49,6 @@
         crossorigin="anonymous"></script>
     <script src="./js/common.js"></script>
     <script src="./js/login.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function () {
-                navigator.serviceWorker
-                    .register('serviceWorker.js')
-                    .then(_ => navigator.serviceWorker.ready)
-                    .then(_ => console.log('ServiceWorker registration succesful!'))
-                    .catch(err => alert(`Service Worker registration failed ${err}`));
-            });
-        } else {
-            alert('Navegador incompativel')
-        }
-    </script>
 </body>
 
 </html>

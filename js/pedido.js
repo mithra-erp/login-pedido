@@ -23,8 +23,6 @@ document.querySelector("#adiciona-produto-botao").addEventListener('click', (eve
 
     index++;
 
-    console.log(index);
-
     const corpoTabelaProdutos =
         `<tbody>
             <tr class="produto-carrinho" data-code="${code}" data-id="${index}">
@@ -72,7 +70,6 @@ const removeItemClick = (event) => {
 
 function removeItem(_id, parentElement) {
     produtosPedido = produtosPedido.filter(item => item.index !== _id);
-    console.log(produtosPedido)
     sessionStorage.setItem("produtosPedido", JSON.stringify(produtosPedido));
 
     parentElement.remove();
@@ -83,15 +80,12 @@ const atualizaTotal = () => {
     let total = produtosPedido.reduce((accumulator, object) => {
         return accumulator + (object.quantidade * object.preco);
     }, 0);
-    console.log(total.toLocalCurrency())
     totalPedido.innerHTML = total.toLocalCurrency();
 }
 //document.addEventListener("DOMContentLoaded", event => {
 
 const onContentLoaded = (event) => {
-    console.log("DOM completamente carregado e analisado");
-
-    let search = {
+    let data = {
         area: "PRODUT",
         fields: ["CODIGO", "DESCRICAO"],
         search: [
@@ -103,29 +97,20 @@ const onContentLoaded = (event) => {
         ]
     }
 
-    let options = {
-        method: 'post',
-        headers: new Headers({
-            'X-Client-Id': xClientId
-        }),
-        body: JSON.stringify(search)
-    };
-
-    fetch(`${baseUrlApi}/mithra/v1/search`, options).then(async response => {
+    search(data).then(async response => {
         if (response.ok) {
             json = await response.json()
             let produtosArray = json.data
-            console.log(produtosArray)
 
             autocomplete(document.querySelector("#input-produto"), produtosArray);
         } else {
             if (response.status == 401) {
-                sessionStorage.clear();
-                window.location.href = '/';
+                //sessionStorage.clear();
+                //window.location.href = '/';
             }
         }
     })
-    atualizaTotal();
+    //atualizaTotal();
 };
 
 const buscaTabela = (tabela) => {
@@ -144,7 +129,6 @@ const buscaTabela = (tabela) => {
     search(data).then(async response => {
         if (response.ok) {
             let json = await response.json()
-            console.log(json);
             tabelaPreco = json.data;
         } else {
             if (response.status == 401) {
@@ -171,7 +155,6 @@ const buscaCondicoes = () => {
         if (response.ok) {
             let json = await response.json()
             if (json.success) {
-                console.log(json);
                 for (const condicao of json.data) {
                     let opt = document.createElement('option');
                     opt.value = condicao.CODIGO;
@@ -190,7 +173,12 @@ const buscaCondicoes = () => {
 const buscaFormasPagamento = () => {
     let data = {
         area: "FORMPG",
-        fields: ["CODIGO", "DESCRICAO"]
+        fields: ["CODIGO", "DESCRICAO"],
+        search: [{
+            field: "CODIGO",
+            operation: "GREATER_THAN",
+            value: ''
+        }]
     }
 
     ShowOverlay();
@@ -198,7 +186,6 @@ const buscaFormasPagamento = () => {
         if (response.ok) {
             let json = await response.json()
             if (json.success) {
-                console.log(json);
                 for (const condicao of json.data) {
                     let opt = document.createElement('option');
                     opt.value = condicao.CODIGO;
@@ -228,7 +215,7 @@ produto.addEventListener('focusout', (event) => {
 });
 
 inputCgc.addEventListener('focusout', (event) => {
-    if (inputCgc.value.length < 11) return;
+    if (inputCgc.value.trim().length < 11) return;
 
     let data = {
         area: "CLIENT",
@@ -365,19 +352,17 @@ document.querySelector("#finaliza-pedido-botao").addEventListener('click', (even
         }]
     }];
 
-    console.log(JSON.stringify(data));
 
     insert(data).then(async response => {
 
         if (response.ok) {
             let json = await response.json();
-            console.log(json)
             if (json.success) {
                 let chave = json.data[0];
 
                 $.confirm({
                     title: 'Sucesso!',
-                    content: 'Pedido salvo!',
+                    content: `Pedido ${chave} salvo!`,
                     type: 'green',
                     typeAnimated: true,
                     buttons: {
@@ -390,11 +375,10 @@ document.querySelector("#finaliza-pedido-botao").addEventListener('click', (even
                         }
                     }
                 });
-                sessionStorage.clear();
+                sessionStorage.removeItem('produtosPedido');
             }
         } else {
             let texto = await response.text();
-            console.log(texto);
         }
         HideOverlay();
     });;
@@ -542,3 +526,5 @@ produtosPedido.forEach(produto => {
 
 
 document.addEventListener("DOMContentLoaded", onContentLoaded);
+
+validaToken();
