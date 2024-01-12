@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
@@ -25,7 +25,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./CSS/stylesheet.css">
     <link rel="stylesheet" type="text/css" href="./CSS/loader.css">
-    <link rel="stylesheet" href="./CSS/pedido.css">
+    <link rel="stylesheet" type="text/css" href="./CSS/pedido.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link rel="stylesheet" href="./CSS/jquery-confirm.min.css">
     <title>Pedido</title>
@@ -36,43 +36,48 @@
     <main class="container">
         <h2>Cliente</h2>
         <form id="form-cliente" autocomplete="off" action="#">
+            <input type="hidden" id="input-codigo-cliente" />
             <div class="cliente form-group">
-                <input type="hidden" id="input-codigo-cliente" />
-                <div class="col-lg-6">
-                    <div>
+                <div class="row">
+                    <div class="col-md-6">
                         <label for="input-cgc">CPF OU CNPJ</label>
                         <input id="input-cgc" class="cgc form-control" type="text" placeholder="Insira o CPF OU CNPJ">
                     </div>
-                    <div>
+                    <div class="col-md-6">
                         <label for="input-nome">Nome</label>
                         <input id="input-nome" class="nome form-control" type="text" placeholder="Nome" disabled>
                     </div>
-                    <div>
-                        <label for="input-endereco">Endereço</label>
-                        <input id="input-endereco" class="endereco form-control" type="text" placeholder="Endereço" disabled>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="input-cep">CEP</label>
+                        <input id="input-cep" class="cep form-control" type="text" placeholder="Cep" disabled>
                     </div>
-                    <div>
+                    <div class="col-md-6">
+                        <label for="input-endereco">Endereço</label>
+                        <input id="input-endereco" class="endereco form-control" type="text" placeholder="Endereço"
+                            disabled>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
                         <label for="input-numero">Numero</label>
                         <input id="input-numero" class="numero form-control" type="text" placeholder="Numero" disabled>
                     </div>
-
-                </div>
-                <div class="col-lg-6">
-                    <div>
+                    <div class="col-md-6">
                         <label for="input-bairro">Bairro</label>
                         <input id="input-bairro" class="bairro form-control" type="text" placeholder="Bairro" disabled>
                     </div>
-                    <div>
-                        <label for="input-cep">Cep</label>
-                        <input id="input-cep" class="cep form-control" type="text" placeholder="Cep" disabled>
-                    </div>
-                    <div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
                         <label for="input-cidade">Cidade</label>
                         <input id="input-cidade" class="cidade form-control" type="text" placeholder="Cidade" disabled>
                     </div>
-                    <div>
+                    <div class="col-md-6">
                         <label for="input-telefone">Telefone</label>
-                        <input id="input-telefone" class="telefone form-control" type="text" placeholder="Telefone" disabled>
+                        <input id="input-telefone" class="telefone form-control" type="text" placeholder="Telefone"
+                            disabled>
                     </div>
                 </div>
 
@@ -81,35 +86,37 @@
         </form>
 
         <h2>Vendedor</h2>
-        <form id="form-vendedor" autocomplete="off" action="#">
-            <div class="vendedor form-group">
-                <div class="col-lg-12">
-                    <div>
-                        <label for="input-vendedor">Nome Vendedor</label>
-                        <input id="input-vendedor" class="vendedor form-control" type="text" placeholder="">
-                    </div>
+        <div class="vendedor form-group">
+            <div class="col-lg-12">
+                <div>
+                    <label for="input-vendedor">Nome Vendedor</label>
+                    <input id="input-vendedor" class="vendedor form-control" type="text" placeholder="">
                 </div>
             </div>
-        </form>
+        </div>
 
-        
+
 
         <h2>Adicionar produto</h2>
         <form id="form-pedido" autocomplete="off" action="#">
             <div class="produto form-group">
-                <div>
-                    <label for="input-produto">Produto</label>
-                    <input id="input-produto" class="produto form-control" type="text" placeholder="Insira o produto">
-                    <ul class="sugestoes"></ul>
-                </div>
-                <div>
-                    <label for="input-quantidade">Quantidade</label>
-                    <input id="input-quantidade" class="quantidade form-control" type="text" placeholder="Quantidade">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="input-produto">Produto</label>
+                        <input id="input-produto" class="produto form-control" type="text"
+                            placeholder="Insira o produto">
+                        <ul class="sugestoes"></ul>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="input-quantidade">Quantidade</label>
+                        <input id="input-quantidade" class="quantidade form-control" type="text"
+                            placeholder="Quantidade">
 
-                </div>
-                <div id="div-input-valor">
-                    <label for="input-valor">Valor</label>
-                    <input id="input-valor" class="valor form-control" value="0" type="number" placeholder="Valor">
+                    </div>
+                    <div class="col-md-4" id="div-input-valor">
+                        <label for="input-valor">Valor</label>
+                        <input id="input-valor" class="valor form-control" value="0" type="number" placeholder="Valor">
+                    </div>
                 </div>
                 <!-- <div class="botoes-quantidade">
                     <button type="button" class="increment-decrement" onclick="somaQuantidade(-1, '${codigoProduto}')"
@@ -119,8 +126,10 @@
                         value="+">+
                     </button>
                 </div> -->
-                <div>
-                    <button class="btn btn-lg" id="adiciona-produto-botao">Adicionar produto</button>
+                <div class="row">
+                    <div class="col-auto">
+                        <button class="btn btn-primary btn-lg" id="adiciona-produto-botao">Adicionar produto</button>
+                    </div>
                 </div>
             </div>
 
@@ -158,14 +167,14 @@
             <div class="produto form-group" id="forma-pagamento">
                 <div>
                     <label for="input-forma">Forma Pagamento</label>
-                    <select id="input-forma-pagamento" class="forma-pagamento form-control" type="text"
+                    <select id="input-forma-pagamento" class="forma-pagamento form-select" type="text"
                         placeholder="Insira o produto">
                         <option selected disabled value="">Selecione</option>
                     </select>
                 </div>
                 <div>
                     <label for="input-condicao">Condição Pagamento</label>
-                    <select id="input-condicao-pagamento" class="condicao-pagamento form-control" type="text"
+                    <select id="input-condicao-pagamento" class="condicao-pagamento form-select" type="text"
                         placeholder="Insira o produto">
                         <option selected disabled value="">Selecione</option>
                     </select>
@@ -177,6 +186,10 @@
             <button class="btn btn-success btn-lg" id="finaliza-pedido-botao">Finalizar pedido</button>
         </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
     <script src="./js/jquery-confirm.min.js"></script>
     <script src="./js/common.js"></script>
     <script src="./js/pedido.js"></script>
