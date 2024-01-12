@@ -30,6 +30,9 @@ button.increment-decrement {
     text-align: end;
 }
 
+.input { 
+    text-transform: uppercase;
+}
 
 main h2 {
     border-bottom: 1px solid var(--gray3);
@@ -243,12 +246,6 @@ img.remove-item {
 @media (min-width:998px) and (max-width: 1200px)  {
     div.produto.form-group input {
         width: 90%;
-    }
-}
-
-@media (min-width: 1000px) {
-    div.produto.form-group, div.cliente.form-group {
-        display: flex;
     }
 }
 
