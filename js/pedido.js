@@ -1,1 +1,655 @@
-const _0x51f8ea=_0xa5ba;(function(_0x23e54d,_0x55a6c9){const _0x12f4ee=_0xa5ba,_0x462c9b=_0x23e54d();while(!![]){try{const _0x22488b=-parseInt(_0x12f4ee(0x1c3))/0x1+-parseInt(_0x12f4ee(0x171))/0x2*(-parseInt(_0x12f4ee(0x1c7))/0x3)+-parseInt(_0x12f4ee(0x15f))/0x4*(-parseInt(_0x12f4ee(0x1ad))/0x5)+parseInt(_0x12f4ee(0x13e))/0x6*(parseInt(_0x12f4ee(0x1c6))/0x7)+parseInt(_0x12f4ee(0x147))/0x8+-parseInt(_0x12f4ee(0x1ae))/0x9*(-parseInt(_0x12f4ee(0x158))/0xa)+parseInt(_0x12f4ee(0x193))/0xb*(-parseInt(_0x12f4ee(0x145))/0xc);if(_0x22488b===_0x55a6c9)break;else _0x462c9b['push'](_0x462c9b['shift']());}catch(_0x21292b){_0x462c9b['push'](_0x462c9b['shift']());}}}(_0x4d20,0xefcd4));var novoCliente=![],dadosEndereco=null;const form=document['querySelector']('#form-pedido'),inputCgc=document[_0x51f8ea(0x186)](_0x51f8ea(0x1c5));var tabelaPreco=[],produtosArray=[];const quantidade=document[_0x51f8ea(0x186)]('#input-quantidade'),condicaoPagamento=document[_0x51f8ea(0x186)]('#input-condicao-pagamento'),formaPagamento=document[_0x51f8ea(0x186)]('#input-forma-pagamento'),produto=document['querySelector'](_0x51f8ea(0x1a0)),valorProduto=document[_0x51f8ea(0x186)](_0x51f8ea(0x178)),totalPedido=document[_0x51f8ea(0x186)]('#total-pedido'),dadosUsuario=JSON[_0x51f8ea(0x18a)](sessionStorage[_0x51f8ea(0x19b)](_0x51f8ea(0x1b6)));let produtosPedido=JSON[_0x51f8ea(0x18a)](sessionStorage[_0x51f8ea(0x19b)](_0x51f8ea(0x153)))||[],tabelaProdutos=document[_0x51f8ea(0x186)]('#produtos-carrinho\x20tbody');document[_0x51f8ea(0x186)]('#adiciona-produto-botao')[_0x51f8ea(0x169)]('click',_0x3e3a7f=>{const _0x2da60c=_0x51f8ea;_0x3e3a7f[_0x2da60c(0x160)]();let _0xc2011b=produto[_0x2da60c(0x170)](_0x2da60c(0x1cd)),_0x49890d=parseFloat(valorProduto[_0x2da60c(0x136)][_0x2da60c(0x1a2)](',','.')),_0x3ae5db=Math['max'](...produtosPedido[_0x2da60c(0x167)](_0x45c99c=>_0x45c99c[_0x2da60c(0x1d5)]));if(_0x3ae5db==null||isNaN(_0x3ae5db)||!isFinite(_0x3ae5db))_0x3ae5db=0x0;_0x3ae5db++;const _0x5cb418='<tbody>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20class=\x22produto-carrinho\x22\x20data-code=\x22'+_0xc2011b+'\x22\x20data-id=\x22'+_0x3ae5db+_0x2da60c(0x1aa)+produto['value']+_0x2da60c(0x16b)+quantidade['value']+_0x2da60c(0x1b8)+_0x49890d[_0x2da60c(0x1d6)]()+_0x2da60c(0x137)+parseFloat(quantidade[_0x2da60c(0x136)]*_0x49890d)[_0x2da60c(0x1d6)]()+_0x2da60c(0x181);tabelaProdutos[_0x2da60c(0x1cb)]+=_0x5cb418,produtosPedido[_0x2da60c(0x13d)]({'index':_0x3ae5db,'codigo':_0xc2011b,'produto':produto[_0x2da60c(0x136)],'quantidade':parseFloat(quantidade[_0x2da60c(0x136)]),'preco':_0x49890d}),sessionStorage[_0x2da60c(0x196)](_0x2da60c(0x153),JSON[_0x2da60c(0x192)](produtosPedido)),atualizaTotal(),form[_0x2da60c(0x1c1)](),produto[_0x2da60c(0x14d)]();});const removeItemClick=_0x10a76d=>{const _0x4d04c3=_0x51f8ea;_0x10a76d['preventDefault']();var _0x29aa78=_0x10a76d[_0x4d04c3(0x172)]||_0x10a76d[_0x4d04c3(0x15b)];let _0x1241d0=_0x29aa78[_0x4d04c3(0x154)][_0x4d04c3(0x154)][_0x4d04c3(0x170)]('data-id');removeItem(parseInt(_0x1241d0),_0x29aa78[_0x4d04c3(0x154)][_0x4d04c3(0x154)]);};function removeItem(_0x23ca89,_0x100446){const _0x13c4b2=_0x51f8ea;produtosPedido=produtosPedido[_0x13c4b2(0x19e)](_0x4a33c6=>_0x4a33c6['index']!==_0x23ca89),sessionStorage[_0x13c4b2(0x196)](_0x13c4b2(0x153),JSON[_0x13c4b2(0x192)](produtosPedido)),_0x100446[_0x13c4b2(0x1a1)](),atualizaTotal();}const atualizaTotal=()=>{const _0x49e2c1=_0x51f8ea;let _0x112049=produtosPedido[_0x49e2c1(0x1d4)]((_0x246dfc,_0x1155ac)=>{const _0x1ee4e8=_0x49e2c1;return _0x246dfc+_0x1155ac['quantidade']*_0x1155ac[_0x1ee4e8(0x17d)];},0x0);totalPedido[_0x49e2c1(0x1cb)]=_0x112049[_0x49e2c1(0x1d6)]();},onContentLoaded=_0x449de3=>{const _0x3f9fcd=_0x51f8ea;document[_0x3f9fcd(0x186)](_0x3f9fcd(0x198))[_0x3f9fcd(0x136)]=dadosUsuario['NOMVEN'];let _0x22f682={'area':_0x3f9fcd(0x13f),'fields':[_0x3f9fcd(0x1b1),'DESCRICAO'],'search':[{'field':_0x3f9fcd(0x1cf),'operation':_0x3f9fcd(0x139),'value':'A'}]};search(_0x22f682)[_0x3f9fcd(0x18c)](async _0x444460=>{const _0x46010b=_0x3f9fcd;if(_0x444460['ok']){json=await _0x444460[_0x46010b(0x152)]();let _0xaf5a96=json[_0x46010b(0x1d2)];autocomplete(produto,_0xaf5a96);}else _0x444460[_0x46010b(0x13a)]==0x191&&(sessionStorage[_0x46010b(0x162)](),window[_0x46010b(0x13b)]['href']=_0x46010b(0x1bc));});},buscaTabela=_0xfa3167=>{const _0xba33b2=_0x51f8ea;let _0x5ebb48={'area':'ITETAB','fields':[_0xba33b2(0x1c0),_0xba33b2(0x166)],'search':[{'field':_0xba33b2(0x17c),'operation':'EQUAL_TO','value':_0xfa3167}]};ShowOverlay(),search(_0x5ebb48)['then'](async _0x3688ee=>{const _0x4c9fe6=_0xba33b2;if(_0x3688ee['ok']){let _0x7b2199=await _0x3688ee[_0x4c9fe6(0x152)]();tabelaPreco=_0x7b2199[_0x4c9fe6(0x1d2)];}else{if(_0x3688ee['status']==0x191){}}HideOverlay();});},buscaCondicoes=()=>{const _0x19b06f=_0x51f8ea;let _0x10ecdb={'area':_0x19b06f(0x19c),'fields':['CODIGO','DESCRICAO'],'search':[{'field':_0x19b06f(0x1b1),'operation':'GREATER_THAN','value':''}]};ShowOverlay(),search(_0x10ecdb)[_0x19b06f(0x18c)](async _0x571465=>{const _0x47528c=_0x19b06f;if(_0x571465['ok']){let _0x1f4ae5=await _0x571465['json']();if(_0x1f4ae5['success'])for(const _0x59e680 of _0x1f4ae5[_0x47528c(0x1d2)]){let _0x3a5273=document['createElement'](_0x47528c(0x17e));_0x3a5273[_0x47528c(0x136)]=_0x59e680[_0x47528c(0x1b1)],_0x3a5273[_0x47528c(0x1cb)]=_0x59e680[_0x47528c(0x18d)],condicaoPagamento[_0x47528c(0x163)](_0x3a5273);}}else{if(_0x571465['status']==0x191){}}HideOverlay();});},buscaFormasPagamento=()=>{const _0x6b0868=_0x51f8ea;let _0x1f6775={'area':_0x6b0868(0x155),'fields':[_0x6b0868(0x1b1),_0x6b0868(0x18d)],'search':[{'field':_0x6b0868(0x1b1),'operation':_0x6b0868(0x17b),'value':''}]};ShowOverlay(),search(_0x1f6775)[_0x6b0868(0x18c)](async _0x1967b4=>{const _0x19ea3f=_0x6b0868;if(_0x1967b4['ok']){let _0x570467=await _0x1967b4[_0x19ea3f(0x152)]();if(_0x570467['success'])for(const _0x5ca36c of _0x570467[_0x19ea3f(0x1d2)]){let _0x47bc98=document['createElement'](_0x19ea3f(0x17e));_0x47bc98['value']=_0x5ca36c[_0x19ea3f(0x1b1)],_0x47bc98[_0x19ea3f(0x1cb)]=_0x5ca36c[_0x19ea3f(0x18d)],formaPagamento['appendChild'](_0x47bc98);}}else{if(_0x1967b4[_0x19ea3f(0x13a)]==0x191){}}HideOverlay();});},atualizaPreco=()=>{const _0x506fc2=_0x51f8ea;let _0x208b49=0x0,_0x5a00f8=produto[_0x506fc2(0x170)](_0x506fc2(0x1cd)),_0x31dde4=tabelaPreco[_0x506fc2(0x18e)](_0x478fcc=>_0x478fcc[_0x506fc2(0x1c0)]===_0x5a00f8);_0x31dde4!=null&&_0x31dde4!=_0x506fc2(0x195)&&(_0x208b49=_0x31dde4[_0x506fc2(0x166)]),valorProduto[_0x506fc2(0x136)]=_0x208b49;};produto['addEventListener'](_0x51f8ea(0x199),_0x23ce5f=>{atualizaPreco();}),inputCgc['addEventListener'](_0x51f8ea(0x199),_0x3fec9e=>{const _0x4ad634=_0x51f8ea;if(inputCgc[_0x4ad634(0x136)][_0x4ad634(0x1c9)]()['length']<0xb)return;let _0x269ac1={'area':_0x4ad634(0x179),'fields':[_0x4ad634(0x1b1),_0x4ad634(0x191),_0x4ad634(0x148),_0x4ad634(0x18f),_0x4ad634(0x1a8),_0x4ad634(0x183),'MUNICIPIO',_0x4ad634(0x1d1),_0x4ad634(0x1b5)],'search':[{'field':'CGC','operation':'EQUAL_TO','value':inputCgc[_0x4ad634(0x136)]}]};ShowOverlay(),search(_0x269ac1)[_0x4ad634(0x18c)](async _0xcc31ba=>{const _0x4aa5cb=_0x4ad634;HideOverlay();if(_0xcc31ba['ok']){let _0x397cf8=await _0xcc31ba[_0x4aa5cb(0x152)]();if(_0x397cf8['success']){let _0x3ae532=_0x397cf8[_0x4aa5cb(0x1d2)];if(_0x3ae532['length']>0x0){_0x3ae532=_0x3ae532[0x0],document['querySelector'](_0x4aa5cb(0x135))[_0x4aa5cb(0x136)]=_0x3ae532['CODIGO'],document[_0x4aa5cb(0x186)]('#input-nome')[_0x4aa5cb(0x136)]=_0x3ae532[_0x4aa5cb(0x191)],document[_0x4aa5cb(0x186)]('#input-endereco')[_0x4aa5cb(0x136)]=_0x3ae532[_0x4aa5cb(0x148)],document[_0x4aa5cb(0x186)](_0x4aa5cb(0x18b))[_0x4aa5cb(0x136)]=_0x3ae532[_0x4aa5cb(0x18f)],document[_0x4aa5cb(0x186)]('#input-bairro')[_0x4aa5cb(0x136)]=_0x3ae532['BAIRRO'],document[_0x4aa5cb(0x186)](_0x4aa5cb(0x184))['value']=_0x3ae532[_0x4aa5cb(0x183)],document['querySelector'](_0x4aa5cb(0x14e))[_0x4aa5cb(0x136)]=_0x3ae532[_0x4aa5cb(0x1c4)],document['querySelector'](_0x4aa5cb(0x157))[_0x4aa5cb(0x136)]=_0x3ae532[_0x4aa5cb(0x1d1)],buscaTabela(_0x3ae532[_0x4aa5cb(0x1b5)]);return;}}$['confirm']({'title':_0x4aa5cb(0x189),'content':_0x4aa5cb(0x1b9),'type':_0x4aa5cb(0x16d),'typeAnimated':!![],'buttons':{'success':{'text':'Cancelar','btnClass':_0x4aa5cb(0x1af),'action':function(){const _0x1ad7ac=_0x4aa5cb;inputCgc[_0x1ad7ac(0x136)]='';}},'register':{'text':_0x4aa5cb(0x16f),'btnClass':_0x4aa5cb(0x1b4),'action':cadastro}}});}else{if(_0xcc31ba['status']==0x191){}}});});const cadastro=()=>{const _0x417e53=_0x51f8ea;document[_0x417e53(0x186)](_0x417e53(0x168))[_0x417e53(0x1b7)]=![],document[_0x417e53(0x186)](_0x417e53(0x140))[_0x417e53(0x1b7)]=![],document[_0x417e53(0x186)](_0x417e53(0x18b))[_0x417e53(0x1b7)]=![],document['querySelector']('#input-bairro')[_0x417e53(0x1b7)]=![],document[_0x417e53(0x186)](_0x417e53(0x184))[_0x417e53(0x1b7)]=![],document[_0x417e53(0x186)]('#input-cidade')[_0x417e53(0x1b7)]=![],document['querySelector'](_0x417e53(0x157))['disabled']=![],novoCliente=!![],document[_0x417e53(0x186)](_0x417e53(0x168))['focus']();},cadastrar=async()=>{const _0x2fc657=_0x51f8ea;let _0x1900f6=_0x2fc657(0x141)+document['querySelector'](_0x2fc657(0x184))[_0x2fc657(0x136)]+_0x2fc657(0x1a4),_0xf636b9={'method':_0x2fc657(0x1ab)},_0x5cab4f=await fetch(_0x1900f6,_0xf636b9);dadosEndereco=null;_0x5cab4f['ok']&&(dadosEndereco=await _0x5cab4f['json']());let _0x5451c1=document['querySelector'](_0x2fc657(0x168))['value'][_0x2fc657(0x17f)](),_0x27f104=document[_0x2fc657(0x186)](_0x2fc657(0x140))[_0x2fc657(0x136)][_0x2fc657(0x17f)](),_0x14431a=document[_0x2fc657(0x186)](_0x2fc657(0x18b))['value'][_0x2fc657(0x17f)](),_0x254460=document[_0x2fc657(0x186)]('#input-bairro')[_0x2fc657(0x136)][_0x2fc657(0x17f)](),_0x3b402b=document[_0x2fc657(0x186)](_0x2fc657(0x184))[_0x2fc657(0x136)][_0x2fc657(0x17f)](),_0xa33991=document[_0x2fc657(0x186)]('#input-cidade')[_0x2fc657(0x136)][_0x2fc657(0x17f)](),_0x3ff4ef=document['querySelector'](_0x2fc657(0x157))['value'][_0x2fc657(0x17f)](),_0x4778d0=[{'area':_0x2fc657(0x179),'data':[{'CODIGO':_0x2fc657(0x17a),'CGC':inputCgc[_0x2fc657(0x136)],'PESSOA':inputCgc['value']['length']==0xe?'J':'F','CODPAIS':'1058','DATCAD':currentDate(),'NOME':_0x5451c1,'ENDERECO':_0x27f104,'NUMERO':_0x14431a,'BAIRRO':_0x254460,'CEP':_0x3b402b,'MUNICIPIO':_0xa33991,'TELEFO':_0x3ff4ef,'VENDED':dadosUsuario[_0x2fc657(0x1b1)],'CODMUN':dadosEndereco!=null?dadosEndereco[_0x2fc657(0x156)]:'','ESTADO':dadosEndereco!=null?dadosEndereco['uf']:''}],'RETURN_ID':_0x2fc657(0x1b1)}],_0x53f142=await insert(_0x4778d0);if(_0x53f142['ok']){let _0x376db4=await _0x53f142[_0x2fc657(0x152)]();return _0x376db4[_0x2fc657(0x1d2)][0x0];}else return'';};document[_0x51f8ea(0x186)](_0x51f8ea(0x184))[_0x51f8ea(0x169)](_0x51f8ea(0x199),async _0x383479=>{const _0x53fcf7=_0x51f8ea;let _0x215000=_0x383479[_0x53fcf7(0x172)][_0x53fcf7(0x136)][_0x53fcf7(0x1a2)](/\D/g,'');if(_0x215000[_0x53fcf7(0x1c9)]()[_0x53fcf7(0x177)]!=0x8)return;ShowOverlay();let _0xaba6a1=_0x53fcf7(0x141)+_0x215000+_0x53fcf7(0x1a4),_0x1bdbcf={'method':_0x53fcf7(0x1ab)},_0x166e26=await fetch(_0xaba6a1,_0x1bdbcf);dadosEndereco=null,_0x166e26['ok']?(dadosEndereco=await _0x166e26[_0x53fcf7(0x152)](),document[_0x53fcf7(0x186)](_0x53fcf7(0x140))[_0x53fcf7(0x136)]=dadosEndereco[_0x53fcf7(0x13c)][_0x53fcf7(0x17f)](),document[_0x53fcf7(0x186)](_0x53fcf7(0x1b2))[_0x53fcf7(0x136)]=dadosEndereco[_0x53fcf7(0x159)][_0x53fcf7(0x17f)](),document[_0x53fcf7(0x186)](_0x53fcf7(0x14e))[_0x53fcf7(0x136)]=dadosEndereco[_0x53fcf7(0x19f)][_0x53fcf7(0x17f)](),HideOverlay(),document[_0x53fcf7(0x186)](_0x53fcf7(0x18b))[_0x53fcf7(0x14d)]()):HideOverlay();}),document['querySelector'](_0x51f8ea(0x173))[_0x51f8ea(0x169)](_0x51f8ea(0x144),()=>{const _0x124e3a=_0x51f8ea;var _0x8d68ad=window[_0x124e3a(0x1ca)][_0x124e3a(0x197)](_0x124e3a(0x14f))[0x0];html2canvas(_0x8d68ad)[_0x124e3a(0x18c)](_0x3af720=>{const _0x293fe5=_0x124e3a;var _0x3035c5=_0x3af720['toDataURL']('image/jpeg'),_0x26737b=new jsPDF('p','mm','a4');_0x26737b['addImage'](_0x3035c5,'jpeg',0x5,-0xa,0xc8,0xc8),_0x26737b[_0x293fe5(0x1c8)](_0x293fe5(0x1a9));});}),document[_0x51f8ea(0x186)](_0x51f8ea(0x1bd))[_0x51f8ea(0x169)](_0x51f8ea(0x144),async _0x42b348=>{const _0x163067=_0x51f8ea;_0x42b348[_0x163067(0x160)]();let _0xccfb9f=document[_0x163067(0x186)]('#input-codigo-cliente'),_0x16c7c7=document['querySelector'](_0x163067(0x198))[_0x163067(0x136)],_0x10c38f=document[_0x163067(0x186)](_0x163067(0x16a))[_0x163067(0x136)];if(_0xccfb9f['value']===''){novoCliente&&(_0xccfb9f[_0x163067(0x136)]=await cadastrar());if(_0xccfb9f[_0x163067(0x136)]===''){errorAlert('Erro',_0x163067(0x1a5));return;}}if(_0x16c7c7===''){errorAlert('Erro','Informe\x20o\x20vendedor!');return;}if(condicaoPagamento[_0x163067(0x136)]===''){errorAlert(_0x163067(0x151),_0x163067(0x1d0));return;}if(formaPagamento[_0x163067(0x136)]===''){errorAlert(_0x163067(0x151),'Informe\x20a\x20Forma\x20de\x20Pagamento');return;}if(produtosPedido[_0x163067(0x177)]==0x0){errorAlert(_0x163067(0x151),_0x163067(0x1a3));return;}ShowOverlay();let _0x34ffe3=[],_0x368966=0x0;for(const _0x366d85 of produtosPedido){_0x34ffe3[_0x163067(0x13d)]({'ORDEM':(++_0x368966)['toString'](),'PRODUTO':_0x366d85[_0x163067(0x19d)],'QUANT':_0x366d85[_0x163067(0x185)][_0x163067(0x1c2)](),'VALUNIT':_0x366d85['preco'][_0x163067(0x1c2)](),'TOTAL':(_0x366d85[_0x163067(0x17d)]*_0x366d85['quantidade'])[_0x163067(0x1c2)](),'INTEGR':_0x163067(0x176),'ARMAZEM':'01'});}const _0x43ddc0=_0x34ffe3[_0x163067(0x1d4)]((_0x1558d1,_0x2c1583)=>{return _0x1558d1+parseFloat(_0x2c1583['TOTAL']);},0x0),_0x1b1204=_0x34ffe3[_0x163067(0x1d4)]((_0x427b01,_0x294160)=>{const _0x310694=_0x163067;return _0x427b01+parseFloat(_0x294160[_0x310694(0x1d3)]);},0x0);let _0x22071e=[{'area':'CABPDV','data':[{'CLIENTE':_0xccfb9f[_0x163067(0x136)],'VENDEDOR':dadosUsuario[_0x163067(0x1b1)],'CONDICAO':condicaoPagamento[_0x163067(0x136)],'FORMPG':formaPagamento['value'],'EMISSAO':currentDate(),'DATAINC':currentDate(),'TIPO':_0x10c38f,'STATUS':'B','FLAG':'A','FILIAL':_0x163067(0x14c),'TABELA':'1','QTDTOT':_0x1b1204[_0x163067(0x1c2)](),'VALOR':_0x43ddc0['toString'](),'VALBRUT':_0x43ddc0[_0x163067(0x1c2)](),'VALMERC':_0x43ddc0[_0x163067(0x1c2)](),'OBS_INT':_0x163067(0x161)+_0x16c7c7[_0x163067(0x17f)](),'ITEPDV':_0x34ffe3}]}];insert(_0x22071e)[_0x163067(0x18c)](async _0x345c8a=>{const _0x1f5922=_0x163067;if(_0x345c8a['ok']){let _0x69512c=await _0x345c8a[_0x1f5922(0x152)]();if(_0x69512c[_0x1f5922(0x190)]){let _0x323762=_0x69512c[_0x1f5922(0x1d2)][0x0];$[_0x1f5922(0x1a6)]({'title':_0x1f5922(0x1bf),'content':_0x1f5922(0x1ac)+_0x323762+'\x20salvo!','type':'green','typeAnimated':!![],'buttons':{'success':{'text':'Ok','btnClass':_0x1f5922(0x1b4),'action':function(){const _0x897f0f=_0x1f5922;document[_0x897f0f(0x13b)][_0x897f0f(0x1b3)]();}}}}),sessionStorage[_0x1f5922(0x16e)](_0x1f5922(0x153));}}else{let _0x48abe9=await _0x345c8a['text']();}HideOverlay();});;});function _0xa5ba(_0x215c47,_0x54829c){const _0x4d2018=_0x4d20();return _0xa5ba=function(_0xa5ba56,_0x3001d2){_0xa5ba56=_0xa5ba56-0x135;let _0x1b106d=_0x4d2018[_0xa5ba56];return _0x1b106d;},_0xa5ba(_0x215c47,_0x54829c);}function autocomplete(_0x369f92,_0x5f2325){const _0x36b1be=_0x51f8ea;var _0x496cee;_0x369f92[_0x36b1be(0x169)](_0x36b1be(0x1b0),function(_0x15245a){const _0xa0e5fe=_0x36b1be;var _0x27676e,_0x46e2c1,_0x39ceac,_0x540523=this[_0xa0e5fe(0x136)];_0x34858e();if(!_0x540523)return![];_0x496cee=-0x1,_0x27676e=document['createElement'](_0xa0e5fe(0x15d)),_0x27676e[_0xa0e5fe(0x180)]('id',this['id']+_0xa0e5fe(0x149)),_0x27676e['setAttribute']('class','autocomplete-items'),this[_0xa0e5fe(0x182)][_0xa0e5fe(0x163)](_0x27676e);for(_0x39ceac=0x0;_0x39ceac<_0x5f2325[_0xa0e5fe(0x177)];_0x39ceac++){_0x5f2325[_0x39ceac][_0xa0e5fe(0x18d)][_0xa0e5fe(0x17f)]()['includes'](_0x540523['toUpperCase']())&&(_0x46e2c1=document[_0xa0e5fe(0x19a)](_0xa0e5fe(0x15d)),_0x46e2c1[_0xa0e5fe(0x180)](_0xa0e5fe(0x1cd),_0x5f2325[_0x39ceac][_0xa0e5fe(0x1b1)]),_0x46e2c1['innerHTML']=_0x5f2325[_0x39ceac][_0xa0e5fe(0x18d)][_0xa0e5fe(0x17f)]()['replace'](_0x540523[_0xa0e5fe(0x17f)](),_0xa0e5fe(0x188)+_0x540523['toUpperCase']()+_0xa0e5fe(0x194)),_0x46e2c1[_0xa0e5fe(0x1cb)]+=_0xa0e5fe(0x138)+_0x5f2325[_0x39ceac][_0xa0e5fe(0x18d)]+'\x27>',_0x46e2c1[_0xa0e5fe(0x169)](_0xa0e5fe(0x144),function(_0x437774){const _0x2740e0=_0xa0e5fe;_0x369f92[_0x2740e0(0x136)]=this['getElementsByTagName'](_0x2740e0(0x1b0))[0x0][_0x2740e0(0x136)],_0x369f92[_0x2740e0(0x180)](_0x2740e0(0x1cd),this[_0x2740e0(0x170)](_0x2740e0(0x1cd))),_0x34858e(),atualizaPreco();}),_0x27676e['appendChild'](_0x46e2c1));}}),_0x369f92['addEventListener'](_0x36b1be(0x199),function(_0x1d9099){const _0x1a0f59=_0x36b1be;var _0x1b7ebe=document[_0x1a0f59(0x164)](this['id']+_0x1a0f59(0x149));if(_0x1b7ebe)_0x1b7ebe=_0x1b7ebe[_0x1a0f59(0x197)](_0x1a0f59(0x142));_0x1d9099[_0x1a0f59(0x160)]();if(_0x496cee>-0x1){if(_0x1b7ebe)_0x1b7ebe[_0x496cee]['click']();}}),_0x369f92['addEventListener']('keydown',function(_0x5d579d){const _0x4a3c63=_0x36b1be;var _0x41b04d=document['getElementById'](this['id']+'autocomplete-list');if(_0x41b04d)_0x41b04d=_0x41b04d['getElementsByTagName'](_0x4a3c63(0x142));if(_0x5d579d[_0x4a3c63(0x174)]==0x28)_0x496cee++,_0x10381c(_0x41b04d);else{if(_0x5d579d['keyCode']==0x26)_0x496cee--,_0x10381c(_0x41b04d);else{if(_0x5d579d[_0x4a3c63(0x174)]==0xd){_0x5d579d[_0x4a3c63(0x160)]();if(_0x496cee>-0x1){if(_0x41b04d)_0x41b04d[_0x496cee][_0x4a3c63(0x144)]();}}else{if(_0x5d579d['keyCode']==0x9){if(_0x496cee>-0x1){if(_0x41b04d)_0x41b04d[_0x496cee][_0x4a3c63(0x144)]();}}}}}});function _0x10381c(_0x336106){const _0x217170=_0x36b1be;if(!_0x336106)return![];_0x34630b(_0x336106);if(_0x496cee>=_0x336106[_0x217170(0x177)])_0x496cee=0x0;if(_0x496cee<0x0)_0x496cee=_0x336106[_0x217170(0x177)]-0x1;_0x336106[_0x496cee][_0x217170(0x1bb)][_0x217170(0x175)]('autocomplete-active'),_0x369f92[_0x217170(0x136)]=_0x336106[_0x496cee][_0x217170(0x146)][_0x217170(0x136)];}function _0x34630b(_0xa1b64e){const _0xbe2fce=_0x36b1be;for(var _0x41c453=0x0;_0x41c453<_0xa1b64e[_0xbe2fce(0x177)];_0x41c453++){_0xa1b64e[_0x41c453][_0xbe2fce(0x1bb)]['remove']('autocomplete-active');}}function _0x34858e(_0x4b2bc9){const _0x22d40c=_0x36b1be;var _0x3ed283=document[_0x22d40c(0x15a)](_0x22d40c(0x1ce));for(var _0x4888f8=0x0;_0x4888f8<_0x3ed283['length'];_0x4888f8++){_0x4b2bc9!=_0x3ed283[_0x4888f8]&&_0x4b2bc9!=_0x369f92&&_0x3ed283[_0x4888f8][_0x22d40c(0x182)][_0x22d40c(0x15e)](_0x3ed283[_0x4888f8]);}}document[_0x36b1be(0x169)]('click',function(_0x2aa4e7){const _0x5967a6=_0x36b1be;_0x34858e(_0x2aa4e7[_0x5967a6(0x172)]);});}buscaCondicoes(),buscaFormasPagamento(),document[_0x51f8ea(0x169)](_0x51f8ea(0x187),_0x1f064a=>{const _0x4ba4e3=_0x51f8ea;_0x1f064a['target'][_0x4ba4e3(0x165)]==_0x4ba4e3(0x16c)&&(_0x1f064a[_0x4ba4e3(0x172)][_0x4ba4e3(0x136)]=_0x1f064a[_0x4ba4e3(0x172)][_0x4ba4e3(0x136)]['toUpperCase']());}),produtosPedido[_0x51f8ea(0x1a7)](_0x497073=>{const _0x6e6b7d=_0x51f8ea,_0x5a5098=_0x6e6b7d(0x1cc)+_0x497073['codigo']+_0x6e6b7d(0x1be)+_0x497073[_0x6e6b7d(0x1d5)]+_0x6e6b7d(0x14a)+_0x497073[_0x6e6b7d(0x15c)]+_0x6e6b7d(0x14b)+_0x497073[_0x6e6b7d(0x185)]+_0x6e6b7d(0x143)+parseFloat(_0x497073[_0x6e6b7d(0x17d)])[_0x6e6b7d(0x1d6)]()+'\x22\x20\x20type=\x22text\x22\x20name=\x22\x22\x20placeholder=\x22Qtd\x22\x20disabled>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22produto-total\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20min=\x220\x22\x20value=\x22'+parseFloat(_0x497073[_0x6e6b7d(0x185)]*(_0x497073[_0x6e6b7d(0x17d)]||0x0))[_0x6e6b7d(0x1d6)]()+_0x6e6b7d(0x1ba);tabelaProdutos[_0x6e6b7d(0x1cb)]+=_0x5a5098;}),document[_0x51f8ea(0x169)](_0x51f8ea(0x150),onContentLoaded),validaToken();function _0x4d20(){const _0x2dc727=['VENDEDOR:\x20','clear','appendChild','getElementById','nodeName','PRECO','map','#input-nome','addEventListener','input[name=tipo_pedido]:checked','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22produto-quantidade\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20min=\x220\x22\x20value=\x22','INPUT','red','removeItem','Cadastrar','getAttribute','2gcWdTF','target','#teste-pdf','keyCode','add','5102.21','length','#input-valor','CLIENT','SEQ','GREATER_THAN','CHAVE','preco','option','toUpperCase','setAttribute','\x22\x20\x20type=\x22text\x22\x20name=\x22\x22\x20placeholder=\x22Qtd\x22\x20disabled>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn\x20btn-danger\x22\x20onclick=\x22removeItemClick(event)\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fa\x20fa-trash\x22\x20aria-hidden=\x22true\x22\x20style=\x22pointer-events:\x20none;\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</tbody>','parentNode','CEP','#input-cep','quantidade','querySelector','keyup','<strong>','Erro!','parse','#input-numero','then','DESCRICAO','find','NUMERO','success','NOME','stringify','10813XmNRYd','</strong>','undefined','setItem','getElementsByTagName','#input-vendedor','focusout','createElement','getItem','CONDPG','codigo','filter','localidade','#input-produto','remove','replace','Pedido\x20sem\x20itens','/json','Informe\x20o\x20cliente!','confirm','forEach','BAIRRO','sample.pdf','\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22produto\x20nobr\x22\x20>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','get','Pedido\x20','2415885xAdSiv','9TrzieL','btn-red','input','CODIGO','#input-bairro','reload','btn-green','TABELA','user_data','disabled','\x22\x20\x20type=\x22number\x22\x20name=\x22\x22\x20placeholder=\x22Qtd\x22\x20disabled>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22produto-preco\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20min=\x220\x22\x20value=\x22','Cliente\x20não\x20cadastrado!','\x22\x20\x20type=\x22text\x22\x20name=\x22\x22\x20placeholder=\x22Qtd\x22\x20disabled>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22btn\x20btn-danger\x22\x20onclick=\x22removeItemClick(event)\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fa\x20fa-trash\x22\x20aria-hidden=\x22true\x22\x20style=\x22pointer-events:\x20none;\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20</tr>\x0a\x20\x20\x20\x20','classList','index.html','#finaliza-pedido-botao','\x22\x20data-id=\x22','Sucesso!','PRODUTO','reset','toString','331200GqMzzo','MUNICIPIO','#input-cgc','161zeJsba','3609579SUduYa','save','trim','document','innerHTML','\x0a\x20\x20\x20\x20\x20\x20\x20\x20<tr\x20class=\x22produto-carrinho\x22\x20data-code=\x22','data-code','autocomplete-items','STATUS','Informe\x20a\x20Condição\x20de\x20Pagamento','TELEFO','data','QUANT','reduce','index','toLocalCurrency','#input-codigo-cliente','value','\x22\x20\x20type=\x22text\x22\x20name=\x22\x22\x20placeholder=\x22Qtd\x22\x20disabled>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22produto-total\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20min=\x220\x22\x20value=\x22','<input\x20type=\x27hidden\x27\x20value=\x27','EQUAL_TO','status','location','logradouro','push','303726OOiQzs','PRODUT','#input-endereco','https://viacep.com.br/ws/','div','\x22\x20\x20type=\x22number\x22\x20name=\x22\x22\x20placeholder=\x22Qtd\x22\x20disabled>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22produto-preco\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20min=\x220\x22\x20value=\x22','click','43476HqHPuF','lastElementChild','4668720nphkSg','ENDERECO','autocomplete-list','\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22produto\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</td>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<td\x20class=\x22produto-quantidade\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<input\x20min=\x220\x22\x20value=\x22','0101','focus','#input-cidade','body','DOMContentLoaded','Erro','json','produtosPedido','parentElement','FORMPG','ibge','#input-telefone','14405940hXLwmr','bairro','getElementsByClassName','srcElement','produto','DIV','removeChild','4QtckjA','preventDefault'];_0x4d20=function(){return _0x2dc727;};return _0x4d20();}
+var novoCliente = false;
+var dadosEndereco = null;
+const form = document.querySelector("#form-pedido");
+const inputCgc = document.querySelector("#input-cgc");
+var tabelaPreco = [];
+var produtosArray = [];
+const quantidade = document.querySelector('#input-quantidade');
+const condicaoPagamento = document.querySelector('#input-condicao-pagamento');
+const formaPagamento = document.querySelector('#input-forma-pagamento');
+const produto = document.querySelector('#input-produto');
+const valorProduto = document.querySelector('#input-valor');
+const totalPedido = document.querySelector('#total-pedido');
+const dadosUsuario = JSON.parse(sessionStorage.getItem('user_data'));
+
+let produtosPedido = JSON.parse(sessionStorage.getItem('produtosPedido')) || [];
+
+let tabelaProdutos = document.querySelector('#produtos-carrinho tbody');
+
+document.querySelector("#adiciona-produto-botao").addEventListener('click', (event) => {
+    event.preventDefault();
+    let code = produto.getAttribute('data-code');
+    let precoProduto = parseFloat(valorProduto.value.replace(',', '.'));
+
+    let index = Math.max(...produtosPedido.map(e => e.index));
+    if (index == null || isNaN(index) || !isFinite(index)) index = 0;
+
+    index++;
+
+    const corpoTabelaProdutos =
+        `<tbody>
+            <tr class="produto-carrinho" data-code="${code}" data-id="${index}">
+                <td class="produto nobr" >
+                    ${produto.value}
+                </td>
+                <td class="produto-quantidade">
+                    <input min="0" value="${quantidade.value}"  type="number" name="" placeholder="Qtd" disabled>
+                </td>
+                <td class="produto-preco">
+                    <input min="0" value="${precoProduto.toLocalCurrency()}"  type="text" name="" placeholder="Qtd" disabled>
+                </td>
+                <td class="produto-total">
+                    <input min="0" value="${parseFloat(quantidade.value * precoProduto).toLocalCurrency()}"  type="text" name="" placeholder="Qtd" disabled>
+                </td>
+                <td>
+                    <button class="btn btn-danger" onclick="removeItemClick(event)">
+                        <i class="fa fa-trash" aria-hidden="true" style="pointer-events: none;"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>`;
+
+    tabelaProdutos.innerHTML += corpoTabelaProdutos;
+
+    produtosPedido.push({
+        index: index,
+        codigo: code,
+        produto: produto.value,
+        quantidade: parseFloat(quantidade.value),
+        preco: precoProduto
+    })
+    sessionStorage.setItem('produtosPedido', JSON.stringify(produtosPedido));
+    atualizaTotal();
+    form.reset();
+    produto.focus();
+});
+
+const removeItemClick = (event) => {
+    event.preventDefault();
+    var targetElement = event.target || event.srcElement;
+    let _id = targetElement.parentElement.parentElement.getAttribute('data-id');
+    removeItem(parseInt(_id), targetElement.parentElement.parentElement);
+}
+
+function removeItem(_id, parentElement) {
+    produtosPedido = produtosPedido.filter(item => item.index !== _id);
+    sessionStorage.setItem("produtosPedido", JSON.stringify(produtosPedido));
+
+    parentElement.remove();
+    atualizaTotal();
+}
+
+const atualizaTotal = () => {
+    let total = produtosPedido.reduce((accumulator, object) => {
+        return accumulator + (object.quantidade * object.preco);
+    }, 0);
+    totalPedido.innerHTML = total.toLocalCurrency();
+}
+//document.addEventListener("DOMContentLoaded", event => {
+
+const onContentLoaded = (event) => {
+    document.querySelector("#input-vendedor").value = dadosUsuario.NOMVEN;
+    let data = {
+        area: "PRODUT",
+        fields: ["CODIGO", "DESCRICAO"],
+        search: [
+            {
+                field: "STATUS",
+                operation: "EQUAL_TO",
+                value: "A"
+            }
+        ]
+    }
+
+    search(data).then(async response => {
+        if (response.ok) {
+            json = await response.json()
+            let produtosArray = json.data
+
+            autocomplete(produto, produtosArray);
+        } else {
+            if (response.status == 401) {
+                sessionStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }
+    })
+    //atualizaTotal();
+};
+
+const buscaTabela = (tabela) => {
+    let data = {
+        area: "ITETAB",
+        fields: ["PRODUTO", "PRECO"],
+        search: [
+            {
+                field: "CHAVE",
+                operation: "EQUAL_TO",
+                value: tabela
+            }
+        ]
+    }
+    ShowOverlay();
+    search(data).then(async response => {
+        if (response.ok) {
+            let json = await response.json()
+            tabelaPreco = json.data;
+        } else {
+            if (response.status == 401) {
+            }
+        }
+        HideOverlay();
+    })
+}
+
+
+const buscaCondicoes = () => {
+    let data = {
+        area: "CONDPG",
+        fields: ["CODIGO", "DESCRICAO"],
+        search: [{
+            field: "CODIGO",
+            operation: "GREATER_THAN",
+            value: ''
+        }]
+    }
+
+    ShowOverlay();
+    search(data).then(async response => {
+        if (response.ok) {
+            let json = await response.json()
+            if (json.success) {
+                for (const condicao of json.data) {
+                    let opt = document.createElement('option');
+                    opt.value = condicao.CODIGO;
+                    opt.innerHTML = condicao.DESCRICAO;
+                    condicaoPagamento.appendChild(opt);
+                }
+            }
+        } else {
+            if (response.status == 401) {
+            }
+        }
+        HideOverlay();
+    })
+}
+
+const buscaFormasPagamento = () => {
+    let data = {
+        area: "FORMPG",
+        fields: ["CODIGO", "DESCRICAO"],
+        search: [{
+            field: "CODIGO",
+            operation: "GREATER_THAN",
+            value: ''
+        }]
+    }
+
+    ShowOverlay();
+    search(data).then(async response => {
+        if (response.ok) {
+            let json = await response.json()
+            if (json.success) {
+                for (const condicao of json.data) {
+                    let opt = document.createElement('option');
+                    opt.value = condicao.CODIGO;
+                    opt.innerHTML = condicao.DESCRICAO;
+                    formaPagamento.appendChild(opt);
+                }
+            }
+        } else {
+            if (response.status == 401) {
+            }
+        }
+        HideOverlay();
+    })
+}
+
+const atualizaPreco = () => {
+    let precoProduto = 0;
+    let code = produto.getAttribute('data-code');
+    let preco = tabelaPreco.find(item => item.PRODUTO === code);
+
+    if (preco != null && preco != 'undefined') {
+        precoProduto = preco.PRECO;
+    }
+
+    valorProduto.value = precoProduto;
+}
+
+produto.addEventListener('focusout', (event) => {
+    atualizaPreco();
+});
+
+inputCgc.addEventListener('focusout', (event) => {
+    if (inputCgc.value.trim().length < 11) return;
+
+    let data = {
+        area: "CLIENT",
+        fields: ["CODIGO", "NOME", "ENDERECO", "NUMERO", "BAIRRO", "CEP", "MUNICIPIO", "TELEFO", "TABELA"],
+        search: [
+            {
+                field: "CGC",
+                operation: "EQUAL_TO",
+                value: inputCgc.value
+            }
+        ]
+    }
+
+    ShowOverlay();
+    search(data).then(async response => {
+        HideOverlay();
+
+        if (response.ok) {
+            let json = await response.json()
+            if (json.success) {
+                let client = json.data;
+
+                if (client.length > 0) {
+                    client = client[0];
+                    document.querySelector("#input-codigo-cliente").value = client.CODIGO;
+                    document.querySelector("#input-nome").value = client.NOME;
+                    document.querySelector("#input-endereco").value = client.ENDERECO;
+                    document.querySelector("#input-numero").value = client.NUMERO;
+                    document.querySelector("#input-bairro").value = client.BAIRRO;
+                    document.querySelector("#input-cep").value = client.CEP;
+                    document.querySelector("#input-cidade").value = client.MUNICIPIO;
+                    document.querySelector("#input-telefone").value = client.TELEFO;
+
+                    buscaTabela(client.TABELA);
+                    return;
+                }
+            }
+
+
+            $.confirm({
+                title: 'Erro!',
+                content: 'Cliente não cadastrado!',
+                type: 'red',
+                typeAnimated: true,
+                buttons: {
+                    success: {
+                        text: 'Cancelar',
+                        btnClass: 'btn-red',
+                        action: function () {
+                            inputCgc.value = '';
+                        }
+                    },
+                    register: {
+                        text: 'Cadastrar',
+                        btnClass: 'btn-green',
+                        action: cadastro
+                    }
+                }
+            });
+        } else {
+            if (response.status == 401) {
+            }
+        }
+    })
+});
+
+const cadastro = () => {
+    document.querySelector("#input-nome").disabled = false;
+    document.querySelector("#input-endereco").disabled = false;
+    document.querySelector("#input-numero").disabled = false;
+    document.querySelector("#input-bairro").disabled = false;
+    document.querySelector("#input-cep").disabled = false;
+    document.querySelector("#input-cidade").disabled = false;
+    document.querySelector("#input-telefone").disabled = false;
+    novoCliente = true;
+    document.querySelector("#input-nome").focus();
+}
+
+const cadastrar = async () => {
+    let url = `https://viacep.com.br/ws/${document.querySelector("#input-cep").value}/json`;
+
+    let options = {
+        method: 'get'
+    };
+
+    let result = await fetch(url, options);
+    dadosEndereco = null;
+    if (result.ok) {
+        dadosEndereco = await result.json();
+    }
+
+    let nomeCliente = document.querySelector("#input-nome").value.toUpperCase();
+    let enderecoCliente = document.querySelector("#input-endereco").value.toUpperCase();
+    let numeroEndereco = document.querySelector("#input-numero").value.toUpperCase();
+    let bairroCliente = document.querySelector("#input-bairro").value.toUpperCase();
+    let cepCliente = document.querySelector("#input-cep").value.toUpperCase();
+    let cidadeCliente = document.querySelector("#input-cidade").value.toUpperCase();
+    let telefoneCliente = document.querySelector("#input-telefone").value.toUpperCase();
+
+    let data = [{
+        area: "CLIENT",
+        data: [{
+            CODIGO: "SEQ",
+            CGC: inputCgc.value,
+            PESSOA: inputCgc.value.length == 14 ? "J" : "F",
+            CODPAIS: "1058",
+            DATCAD: currentDate(),
+            NOME: nomeCliente,
+            ENDERECO: enderecoCliente,
+            NUMERO: numeroEndereco,
+            BAIRRO: bairroCliente,
+            CEP: cepCliente,
+            MUNICIPIO: cidadeCliente,
+            TELEFO: telefoneCliente,
+            VENDED: dadosUsuario.CODIGO,
+            CODMUN: dadosEndereco != null ? dadosEndereco.ibge : "",
+            ESTADO: dadosEndereco != null ? dadosEndereco.uf : "",
+        }],
+        RETURN_ID: "CODIGO"
+    }];
+
+    let retorno = await insert(data);
+
+    if (retorno.ok) {
+        let json = await retorno.json();
+        return json.data[0];
+    } else {
+        return '';
+    }
+}
+
+document.querySelector("#input-cep").addEventListener('focusout', async (event) => {
+    let cep = event.target.value.replace(/\D/g, '');
+
+    if (cep.trim().length != 8) return;
+
+    ShowOverlay();
+
+    let url = `https://viacep.com.br/ws/${cep}/json`;
+
+    let options = {
+        method: 'get'
+    };
+
+    let result = await fetch(url, options);
+    dadosEndereco = null;
+    if (result.ok) {
+        dadosEndereco = await result.json();
+        document.querySelector("#input-endereco").value = dadosEndereco.logradouro.toUpperCase();
+        document.querySelector("#input-bairro").value = dadosEndereco.bairro.toUpperCase();
+        document.querySelector("#input-cidade").value = dadosEndereco.localidade.toUpperCase();
+        HideOverlay();
+        document.querySelector("#input-numero").focus();
+    } else {
+        HideOverlay();
+    }
+})
+
+document.querySelector("#finaliza-pedido-botao").addEventListener('click', async (event) => {
+    event.preventDefault();
+    let codigoCliente = document.querySelector("#input-codigo-cliente");
+    let nomeVendedor = document.querySelector('#input-vendedor').value;
+    let tipoPedido = document.querySelector('input[name=tipo_pedido]:checked').value;
+
+    if (codigoCliente.value === '') {
+
+        if (novoCliente) {
+            codigoCliente.value = await cadastrar();
+        }
+
+        if (codigoCliente.value === '') {
+            errorAlert('Erro', 'Informe o cliente!');
+            return;
+        }
+    }
+
+    if (nomeVendedor === '') {
+        errorAlert('Erro', 'Informe o vendedor!');
+        return;
+    }
+
+    if (condicaoPagamento.value === '') {
+        errorAlert('Erro', 'Informe a Condição de Pagamento');
+        return;
+    }
+
+    if (formaPagamento.value === '') {
+        errorAlert('Erro', 'Informe a Forma de Pagamento');
+        return;
+    }
+
+    if (produtosPedido.length == 0) {
+        errorAlert('Erro', 'Pedido sem itens');
+        return;
+    }
+
+    ShowOverlay();
+    let itens = [];
+    let ordem = 0;
+    for (const item of produtosPedido) {
+        itens.push({
+            ORDEM: (++ordem).toString(),
+            PRODUTO: item.codigo,
+            QUANT: item.quantidade.toString(),
+            VALUNIT: item.preco.toString(),
+            TOTAL: (item.preco * item.quantidade).toString(),
+            INTEGR: "5102.21",
+            ARMAZEM: "01"
+        });
+    }
+
+    const sum = itens.reduce((accumulator, object) => {
+        return accumulator + parseFloat(object.TOTAL);
+    }, 0);
+
+    const qtd = itens.reduce((accumulator, object) => {
+        return accumulator + parseFloat(object.QUANT);
+    }, 0);
+
+    let data = [{
+        area: "CABPDV",
+        data: [{
+            CLIENTE: codigoCliente.value,
+            VENDEDOR: dadosUsuario.CODIGO,
+            CONDICAO: condicaoPagamento.value,
+            FORMPG: formaPagamento.value,
+            EMISSAO: currentDate(),
+            DATAINC: currentDate(),
+            TIPO: tipoPedido,
+            STATUS: "B",
+            FLAG: "A",
+            FILIAL: "0101",
+            TABELA: "1",
+            QTDTOT: qtd.toString(),
+            VALOR: sum.toString(),
+            VALBRUT: sum.toString(),
+            VALMERC: sum.toString(),
+            OBS_INT: `VENDEDOR: ${nomeVendedor.toUpperCase()}`,
+            ITEPDV: itens
+        }]
+    }];
+
+
+    insert(data).then(async response => {
+
+        if (response.ok) {
+            let json = await response.json();
+            if (json.success) {
+                let chave = json.data[0];
+
+                $.confirm({
+                    title: 'Sucesso!',
+                    content: `Pedido ${chave} salvo!`,
+                    type: 'green',
+                    typeAnimated: true,
+                    buttons: {
+                        success: {
+                            text: 'Ok',
+                            btnClass: 'btn-green',
+                            action: function () {
+                                document.location.reload();
+                            }
+                        }
+                    }
+                });
+                sessionStorage.removeItem('produtosPedido');
+            }
+        } else {
+            let texto = await response.text();
+        }
+        HideOverlay();
+    });;
+});
+
+function autocomplete(inp, arr) {
+    /*the autocomplete function takes two arguments,
+    the text field element and an array of possible autocompleted values:*/
+    var currentFocus;
+    /*execute a function when someone writes in the text field:*/
+    inp.addEventListener("input", function (e) {
+        var a, b, i, val = this.value;
+        /*close any already open lists of autocompleted values*/
+        closeAllLists();
+        if (!val) { return false; }
+        currentFocus = -1;
+        /*create a DIV element that will contain the items (values):*/
+        a = document.createElement("DIV");
+        a.setAttribute("id", this.id + "autocomplete-list");
+        a.setAttribute("class", "autocomplete-items");
+        /*append the DIV element as a child of the autocomplete container:*/
+        this.parentNode.appendChild(a);
+        /*for each item in the array...*/
+        for (i = 0; i < arr.length; i++) {
+            /*check if the item starts with the same letters as the text field value:*/
+            if (arr[i].DESCRICAO.toUpperCase().includes(val.toUpperCase())) {
+                /*create a DIV element for each matching element:*/
+                b = document.createElement("DIV");
+                b.setAttribute('data-code', arr[i].CODIGO);
+                /*make the matching letters bold:*/
+                //b.innerHTML = "<strong>" + arr[i].DESCRICAO.substr(0, val.length) + "</strong>";
+                b.innerHTML = arr[i].DESCRICAO.toUpperCase().replace(val.toUpperCase(), `<strong>${val.toUpperCase()}</strong>`);
+                /*insert a input field that will hold the current array item's value:*/
+                b.innerHTML += "<input type='hidden' value='" + arr[i].DESCRICAO + "'>";
+                /*execute a function when someone clicks on the item value (DIV element):*/
+                b.addEventListener("click", function (e) {
+                    /*insert the value for the autocomplete text field:*/
+                    inp.value = this.getElementsByTagName("input")[0].value;
+                    inp.setAttribute('data-code', this.getAttribute('data-code'));
+                    /*close the list of autocompleted values,
+                    (or any other open lists of autocompleted values:*/
+                    closeAllLists();
+                    atualizaPreco();
+                });
+                a.appendChild(b);
+            }
+        }
+    });
+    inp.addEventListener('focusout', function (e) {
+        var x = document.getElementById(this.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        e.preventDefault();
+        if (currentFocus > -1) {
+            /*and simulate a click on the "active" item:*/
+            if (x) x[currentFocus].click();
+        }
+    });
+    /*execute a function presses a key on the keyboard:*/
+    inp.addEventListener("keydown", function (e) {
+        var x = document.getElementById(this.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        if (e.keyCode == 40) {
+            /*If the arrow DOWN key is pressed,
+            increase the currentFocus variable:*/
+            currentFocus++;
+            /*and and make the current item more visible:*/
+            addActive(x);
+        } else if (e.keyCode == 38) { //up
+            /*If the arrow UP key is pressed,
+            decrease the currentFocus variable:*/
+            currentFocus--;
+            /*and and make the current item more visible:*/
+            addActive(x);
+        } else if (e.keyCode == 13) {
+            /*If the ENTER key is pressed, prevent the form from being submitted,*/
+            e.preventDefault();
+            if (currentFocus > -1) {
+                /*and simulate a click on the "active" item:*/
+                if (x) x[currentFocus].click();
+            }
+        } else if (e.keyCode == 9) {
+            if (currentFocus > -1) {
+                /*and simulate a click on the "active" item:*/
+                if (x) x[currentFocus].click();
+            }
+        }
+    });
+    function addActive(x) {
+        /*a function to classify an item as "active":*/
+        if (!x) return false;
+        /*start by removing the "active" class on all items:*/
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        /*add class "autocomplete-active":*/
+        x[currentFocus].classList.add("autocomplete-active");
+        inp.value = x[currentFocus].lastElementChild.value;
+    }
+    function removeActive(x) {
+        /*a function to remove the "active" class from all autocomplete items:*/
+        for (var i = 0; i < x.length; i++) {
+            x[i].classList.remove("autocomplete-active");
+        }
+    }
+    function closeAllLists(elmnt) {
+        /*close all autocomplete lists in the document,
+        except the one passed as an argument:*/
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+            if (elmnt != x[i] && elmnt != inp) {
+                x[i].parentNode.removeChild(x[i]);
+            }
+        }
+    }
+    /*execute a function when someone clicks in the document:*/
+    document.addEventListener("click", function (e) {
+        closeAllLists(e.target);
+    });
+}
+
+buscaCondicoes();
+buscaFormasPagamento();
+
+document.addEventListener('keyup', (e) => {
+    if (e.target.nodeName == 'INPUT') {
+        e.target.value = e.target.value.toUpperCase();
+    }
+})
+
+
+produtosPedido.forEach(produto => {
+
+    const corpoTabelaProdutos = `
+        <tr class="produto-carrinho" data-code="${produto.codigo}" data-id="${produto.index}">
+            <td class="produto">
+                ${produto.produto}
+            </td>
+            <td class="produto-quantidade">
+                <input min="0" value="${produto.quantidade}"  type="number" name="" placeholder="Qtd" disabled>
+            </td>
+            <td class="produto-preco">
+                <input min="0" value="${parseFloat(produto.preco).toLocalCurrency()}"  type="text" name="" placeholder="Qtd" disabled>
+            </td>
+            <td class="produto-total">
+                <input min="0" value="${parseFloat(produto.quantidade * (produto.preco || 0)).toLocalCurrency()}"  type="text" name="" placeholder="Qtd" disabled>
+            </td>
+            <td>
+                <button class="btn btn-danger" onclick="removeItemClick(event)">
+                    <i class="fa fa-trash" aria-hidden="true" style="pointer-events: none;"></i>
+                </button>
+            </td>
+        </tr>
+    `;
+    tabelaProdutos.innerHTML += corpoTabelaProdutos;
+
+});
+
+
+document.addEventListener("DOMContentLoaded", onContentLoaded);
+
+validaToken();
