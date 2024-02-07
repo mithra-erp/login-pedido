@@ -28,12 +28,29 @@
     <link rel="stylesheet" type="text/css" href="./CSS/pedido.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link rel="stylesheet" href="./CSS/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
     <title>Pedido</title>
 </head>
 
 <body>
 
     <main class="container">
+        <form id="form-tipo-pedido" autocomplete="off" action="#">
+            <div class="form-group">
+                <div class="d-flex justify-content-evenly">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="tipo_pedido" id="tipo-pedido" value="P"
+                            checked>
+                        <label class="form-check-label" for="tipo-pedido">Pedido</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="tipo_pedido" id="tipo-orcamento" value="O">
+                        <label class="form-check-label" for="tipo-orcamento">Orçamento</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+
         <h2>Cliente</h2>
         <form id="form-cliente" autocomplete="off" action="#">
             <input type="hidden" id="input-codigo-cliente" />
@@ -191,6 +208,7 @@
         crossorigin="anonymous"></script>
 
     <script src="./js/jquery-confirm.min.js"></script>
+    <script src="./js/html2canvas.min.js"></script>
     <script src="./js/common.js"></script>
     <script src="./js/pedido.js"></script>
 </body>
