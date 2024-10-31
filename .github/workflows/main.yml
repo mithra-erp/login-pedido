@@ -1,40 +1,19 @@
-name: "Obfuscate js test application"
+name: Obfuscate JavaScript code
 on: 
   push:
 
+
 jobs:
-  test-js-obfuscation:
+  obfuscate_code:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Set current branch ref
-        id: git_info
-        run: |
-          echo "branch=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
-          echo "hash=$(git rev-parse --short \"$GITHUB_SHA\")" >> $GITHUB_OUTPUT
+      - name: Checkout code from code branch
+        uses: actions/checkout@v2
 
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ steps.git_info.outputs.branch }}
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          
-      - name: Create distribution path
-        run: |
-         mkdir -p js
-      
-      - name: Low obfuscation test
-        uses: KevinRohn/github-action-javascript-obfuscator@v1
-        with:
-          input_path: src
-          output_path: js
-
-          
-      - name: upload files
-        uses: actions/upload-artifact@v4
-        with:
-          name: obufscated_example_files
-          path: |
-            js/
+      # In this step you generally need to run some related command lines
+      # of the JavaScript Obfuscator Tool to obfuscate the JavaScript code.
+      # see 'https://github.com/javascript-obfuscator/javascript-obfuscator#cli-usage'
+      - name: Obfuscate JavaScript code
+        working-directory: js
+        run: javascript-obfuscator common.js --output common.js
+        
