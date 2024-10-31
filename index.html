@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container" style="max-width: 600px;">
         <form class="inputs-usuario">
             <div class="form-group">
 
@@ -47,8 +47,25 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <script src="./js/common.js"></script>
-    <script src="./js/login.js"></script>
+    <script src="./src/common.js"></script>
+    <script src="./src/login.js"></script>
+    
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+	<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    
+	<script>
+		var pdf = new jspdf.jsPDF('p', 'pt', 'letter');
+
+		pdf.html(document.querySelector(".container"), {
+			callback: function (pdf) {
+				// var iframe = document.createElement('iframe');
+				// iframe.setAttribute('style', 'position:absolute;top:0;right:0;height:100%; width:600px');
+				// document.body.appendChild(iframe);
+				// iframe.src = pdf.output('datauristring');
+                pdf.save('web.pdf');
+			}
+		});
+	</script>
 </body>
 
 </html>
