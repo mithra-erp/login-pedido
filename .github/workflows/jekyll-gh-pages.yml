@@ -51,7 +51,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Remove file
-        run: rm -rf ./src
+        run: rm -rf ./src/common.js
 
   deploy:
     environment:
