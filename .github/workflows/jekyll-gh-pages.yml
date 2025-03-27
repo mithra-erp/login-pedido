@@ -45,12 +45,12 @@ jobs:
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./
-          destination: ./dist
+          destination: ./_site
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: dist
-          path: ${{ github.workspace }}/dist
+          name: _site
+          path: ${{ github.workspace }}/_site
 
   # Deploy job
   deploy:
