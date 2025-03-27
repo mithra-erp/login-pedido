@@ -21,10 +21,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Clean secret management files
+      if: ${{ hashFiles('src/') != '' }}
       run: |
         rm -f \
           src/common.js \
-          src/jquery-comfirm.min.js \
+          src/jquery-confirm.min.js \
           src/login.js \
           src/pedido.js
     - name: Commit files and push it
