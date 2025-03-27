@@ -15,6 +15,23 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clean secret management files
+      run: |
+        rm -f \
+          src/common.js \
+          src/jquery-comfirm.min.js \
+          src/login.js \
+          src/pedido.js
+    - name: Commit files and push it
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "github actions"
+        git add .
+        git commit -m "chore: clean repo"
+        git push
   build:
     runs-on: ubuntu-latest
     steps:
@@ -32,31 +49,37 @@ jobs:
         with:
           name: dist
           path: ${{ github.workspace }}/dist
+      - name: Remove File 1
+        uses: JesseTG/rm@v1.0.3
+        with:
+          path: ./src/common.js
+      - name: Remove File 2
+        uses: JesseTG/rm@v1.0.3
+        with:
+          path: ./src/login.js
+      - name: Remove File 3
+        uses: JesseTG/rm@v1.0.3
+        with:
+          path: ./src/pedido.js
 
   remove-file:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Remove file
-        run: rm -rf ./src/common.js
+        run: rm -rf ./src
+
   # Deploy job
   deploy:
     # Add a dependency to the build job
     needs: build
-
-    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
     permissions:
       pages: write      # to deploy to Pages
       id-token: write   # to verify the deployment originates from an appropriate source
-
-    # Deploy to the github-pages environment
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
-    # Specify runner + deployment step
     runs-on: ubuntu-latest
     steps:
       - name: Upload coverage report artifact
@@ -66,4 +89,4 @@ jobs:
           name: github-pages
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 # or specific "vX.X.X" version tag for this action
+        uses: actions/deploy-pages@v4
