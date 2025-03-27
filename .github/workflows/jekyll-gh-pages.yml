@@ -59,6 +59,11 @@ jobs:
     # Specify runner + deployment step
     runs-on: ubuntu-latest
     steps:
+      - name: Upload coverage report artifact
+        id: upload-artifact
+        uses: actions/upload-pages-artifact@main
+        with:
+          name: github-pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4 # or specific "vX.X.X" version tag for this action
