@@ -11,7 +11,7 @@ on:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -21,7 +21,34 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+env:
+  SRC_FILE_PATH: ./src/*.js
+
 jobs:
+  remove-file:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Remove file
+        run: |
+          if [ -f ${{ env.SRC_FILE_PATH }} ]; then
+            rm ${{ env.SRC_FILE_PATH }}
+            echo "Terraform file removed."
+          else
+            echo "Terraform file not found."
+            exit  1
+          fi
+        shell: bash
+      - name: Commit changes
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add ${{ env.SRC_FILE_PATH }}
+          git commit -m "Remove SRC file"
+          git push
+        shell: bash
+
   # Build job
   build:
     runs-on: ubuntu-latest
@@ -54,3 +81,4 @@ jobs:
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v4
+
