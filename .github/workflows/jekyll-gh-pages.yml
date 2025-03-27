@@ -32,37 +32,33 @@ jobs:
         with:
           name: dist
           path: ${{ github.workspace }}/dist
-      - name: Remove File 1
-        uses: JesseTG/rm@v1.0.3
-        with:
-          path: ./src/common.js
-      - name: Remove File 2
-        uses: JesseTG/rm@v1.0.3
-        with:
-          path: ./src/login.js
-      - name: Remove File 3
-        uses: JesseTG/rm@v1.0.3
-        with:
-          path: ./src/pedido.js
 
   remove-file:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Remove file
         run: rm -rf ./src/common.js
-
+  # Deploy job
   deploy:
-    runs-on: ubuntu-latest
+    # Add a dependency to the build job
     needs: build
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
     permissions:
-      pages: write
-      id-token: write
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
+    # Specify runner + deployment step
+    runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v4 # or specific "vX.X.X" version tag for this action
