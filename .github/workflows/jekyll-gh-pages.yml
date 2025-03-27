@@ -68,7 +68,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ github.workspace }}/dist
-          artifact_name: dist
+          name: dist
         continue-on-error: true
       - name: Deploy to GitHub Pages
         id: deployment
