@@ -18,6 +18,8 @@ jobs:
   clean:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout
+      uses: actions/checkout@v4
     - name: Clean secret management files
       run: |
         rm -f \
@@ -49,26 +51,6 @@ jobs:
         with:
           name: dist
           path: ${{ github.workspace }}/dist
-      - name: Remove File 1
-        uses: JesseTG/rm@v1.0.3
-        with:
-          path: ./src/common.js
-      - name: Remove File 2
-        uses: JesseTG/rm@v1.0.3
-        with:
-          path: ./src/login.js
-      - name: Remove File 3
-        uses: JesseTG/rm@v1.0.3
-        with:
-          path: ./src/pedido.js
-
-  remove-file:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Remove file
-        run: rm -rf ./src
 
   # Deploy job
   deploy:
