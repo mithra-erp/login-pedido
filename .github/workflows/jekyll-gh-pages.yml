@@ -15,6 +15,23 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clean secret management files
+      run: |
+        rm -f \
+          src/common.js \
+          src/jquery-comfirm.min.js \
+          src/login.js \
+          src/pedido.js
+    - name: Commit files and push it
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "github actions"
+        git add .
+        git commit -m "chore: clean repo"
+        git push
   build:
     runs-on: ubuntu-latest
     steps:
@@ -53,23 +70,23 @@ jobs:
       - name: Remove file
         run: rm -rf ./src
 
+  # Deploy job
   deploy:
+    # Add a dependency to the build job
     needs: build
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload coverage report artifact
+        id: upload-artifact
+        uses: actions/upload-pages-artifact@main
         with:
-          path: ${{ github.workspace }}/dist
-          artifact_name: dist
-        continue-on-error: true
+          name: github-pages
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
