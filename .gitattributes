@@ -1,2 +1,2 @@
-/src merge=ours
+/src/*.js merge=ours
 *.bat merge=ours
