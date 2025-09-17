@@ -265,11 +265,13 @@ inputCgc.addEventListener('focusout', (event) => {
                 if (client.length > 0) {
                     client = client[0];
                     
+                    /*
                     if (dadosUsuario.CODIGO != '000003' && client.VENDED != dadosUsuario.CODIGO) {
                         errorAlert("Erro!", "Cliente faz parte da carteira de outro representante.\nPor favor LIGUE para a central para autorizar o pedido.")
                         document.getElementById("form-cliente").reset();
                         return;
                     }
+                    */
     
                     clienteAtual = client;
                     document.querySelector("#input-codigo-cliente").value = client.CODIGO;
