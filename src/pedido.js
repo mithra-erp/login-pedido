@@ -1,4 +1,4 @@
-var novoCliente = false;
+﻿var novoCliente = false;
 var dadosEndereco = null;
 var tabelaPreco = [];
 var produtosArray = [];
@@ -14,6 +14,7 @@ const produto = document.querySelector('#input-produto');
 const valorProduto = document.querySelector('#input-valor');
 const totalPedido = document.querySelector('#total-pedido');
 const dadosUsuario = JSON.parse(sessionStorage.getItem('user_data'));
+if (!dadosUsuario) { window.location.href = 'index.html'; }
 
 let produtosPedido = JSON.parse(sessionStorage.getItem('produtosPedido')) || [];
 
@@ -22,37 +23,37 @@ let tabelaProdutos = document.querySelector('#produtos-carrinho tbody');
 document.querySelector("#adiciona-produto-botao").addEventListener('click', (event) => {
     event.preventDefault();
     let code = produto.getAttribute('data-code');
-    let precoProduto = parseFloat(valorProduto.value.replace(',', '.'));
+    let precoProduto = parseFloat(valorProduto.value.replace(/,/g, '.'));
 
-    let index = Math.max(...produtosPedido.map(e => e.index));
-    if (index == null || isNaN(index) || !isFinite(index)) index = 0;
+    if (!code || !produto.value.trim()) { errorAlert('Erro', 'Selecione um produto'); return; }
+    if (!(parseFloat(quantidade.value) > 0)) { errorAlert('Erro', 'Informe uma quantidade válida'); return; }
+
+    let index = produtosPedido.length > 0 ? Math.max(...produtosPedido.map(e => e.index)) : 0;
 
     index++;
 
     const corpoTabelaProdutos =
-        `<tbody>
-            <tr class="produto-carrinho" data-code="${code}" data-id="${index}">
-                <td class="produto nobr" >
-                    ${produto.value}
-                </td>
-                <td class="produto-quantidade">
-                    <input min="0" value="${quantidade.value}"  type="number" name="" placeholder="Qtd" disabled>
-                </td>
-                <td class="produto-preco">
-                    <input min="0" value="${precoProduto.toLocalCurrency()}"  type="text" name="" placeholder="Qtd" disabled>
-                </td>
-                <td class="produto-total">
-                    <input min="0" value="${parseFloat(quantidade.value * precoProduto).toLocalCurrency()}"  type="text" name="" placeholder="Qtd" disabled>
-                </td>
-                <td>
-                    <button class="btn btn-danger" onclick="removeItemClick(event)">
-                        <i class="fa fa-trash" aria-hidden="true" style="pointer-events: none;"></i>
-                    </button>
-                </td>
-            </tr>
-        </tbody>`;
+        `<tr class="produto-carrinho" data-code="${code}" data-id="${index}">
+            <td class="produto nobr" >
+                ${produto.value}
+            </td>
+            <td class="produto-quantidade">
+                <input min="0" value="${quantidade.value}"  type="number" name="" placeholder="Qtd" disabled>
+            </td>
+            <td class="produto-preco">
+                <input min="0" value="${precoProduto.toLocalCurrency()}"  type="text" name="" placeholder="Qtd" disabled>
+            </td>
+            <td class="produto-total">
+                <input min="0" value="${parseFloat(quantidade.value * precoProduto).toLocalCurrency()}"  type="text" name="" placeholder="Qtd" disabled>
+            </td>
+            <td>
+                <button class="btn btn-danger" onclick="removeItemClick(event)">
+                    <i class="fa fa-trash" aria-hidden="true" style="pointer-events: none;"></i>
+                </button>
+            </td>
+        </tr>`;
 
-    tabelaProdutos.innerHTML += corpoTabelaProdutos;
+    tabelaProdutos.insertAdjacentHTML('beforeend', corpoTabelaProdutos);
 
     produtosPedido.push({
         index: index,
@@ -92,7 +93,6 @@ const atualizaTotal = () => {
 
 const onContentLoaded = (event) => {
 
-    console.log(dadosUsuario)
     if (dadosUsuario.ALTVAL == 'S') {
         document.querySelector("#input-valor").disabled = false;
     }
@@ -111,7 +111,7 @@ const onContentLoaded = (event) => {
 
     search(data).then(async response => {
         if (response.ok) {
-            json = await response.json()
+            let json = await response.json()
             let produtosArray = json.data
 
             autocomplete(produto, produtosArray);
@@ -144,6 +144,8 @@ const buscaTabela = (tabela) => {
             tabelaPreco = json.data;
         } else {
             if (response.status == 401) {
+                sessionStorage.clear();
+                window.location.href = 'index.html';
             }
         }
         HideOverlay();
@@ -176,6 +178,8 @@ const buscaCondicoes = () => {
             }
         } else {
             if (response.status == 401) {
+                sessionStorage.clear();
+                window.location.href = 'index.html';
             }
         }
         HideOverlay();
@@ -207,6 +211,8 @@ const buscaFormasPagamento = () => {
             }
         } else {
             if (response.status == 401) {
+                sessionStorage.clear();
+                window.location.href = 'index.html';
             }
         }
         HideOverlay();
@@ -218,7 +224,7 @@ const atualizaPreco = () => {
     let code = produto.getAttribute('data-code');
     let preco = tabelaPreco.find(item => item.PRODUTO === code);
 
-    if (preco != null && preco != 'undefined') {
+    if (preco != null && preco !== undefined) {
         precoProduto = preco.PRECO;
     }
 
@@ -312,11 +318,12 @@ inputCgc.addEventListener('focusout', (event) => {
             });
         } else {
             if (response.status == 401) {
+                sessionStorage.clear();
+                window.location.href = 'index.html';
             }
         }
     });
     document.querySelector("#input-vendedor").disabled = true;
-    return false;
 });
 
 const cadastro = async () => {
@@ -346,7 +353,8 @@ const cadastrar = async () => {
     let result = await fetch(url, options);
     dadosEndereco = null;
     if (result.ok) {
-        dadosEndereco = await result.json();
+        const cepJson = await result.json();
+        if (!cepJson.erro) dadosEndereco = cepJson;
     }
 
     let nomeCliente = document.querySelector("#input-nome").value.toUpperCase();
@@ -409,6 +417,7 @@ document.querySelector("#input-cep").addEventListener('focusout', async (event) 
     dadosEndereco = null;
     if (result.ok) {
         dadosEndereco = await result.json();
+        if (dadosEndereco.erro) { dadosEndereco = null; HideOverlay(); return; }
         document.querySelector("#input-endereco").value = dadosEndereco.logradouro.toUpperCase();
         document.querySelector("#input-bairro").value = dadosEndereco.bairro.toUpperCase();
         document.querySelector("#input-cidade").value = dadosEndereco.localidade.toUpperCase();
@@ -444,7 +453,9 @@ document.querySelector("#finaliza-pedido-botao").addEventListener('click', async
     event.preventDefault();
     let codigoCliente = document.querySelector("#input-codigo-cliente");
     let nomeVendedor = document.querySelector('#input-vendedor').value;
-    let tipoPedido = document.querySelector('input[name=tipo_pedido]:checked').value;
+    const radioChecked = document.querySelector('input[name=tipo_pedido]:checked');
+    if (!radioChecked) { errorAlert('Erro', 'Informe o tipo do pedido'); return; }
+    let tipoPedido = radioChecked.value;
     let observacao = document.querySelector("#observacao");
 
     if (codigoCliente.value === '') {
@@ -531,7 +542,7 @@ document.querySelector("#finaliza-pedido-botao").addEventListener('click', async
             STATUS: "B",
             FLAG: "A",
             FILIAL: "0101",
-            TABELA: clienteAtual.TABELA,
+            TABELA: clienteAtual?.TABELA ?? "3",
             QTDTOT: qtd.toString(),
             VALOR: sum.toString(),
             VALBRUT: sum.toString(),
@@ -601,9 +612,22 @@ function autocomplete(inp, arr) {
                 b.setAttribute('data-code', arr[i].CODIGO);
                 /*make the matching letters bold:*/
                 //b.innerHTML = "<strong>" + arr[i].DESCRICAO.substr(0, val.length) + "</strong>";
-                b.innerHTML = arr[i].DESCRICAO.toUpperCase().replace(val.toUpperCase(), `<strong>${val.toUpperCase()}</strong>`);
-                /*insert a input field that will hold the current array item's value:*/
-                b.innerHTML += "<input type='hidden' value='" + arr[i].DESCRICAO + "'>";
+                const desc = arr[i].DESCRICAO.toUpperCase();
+                const valUpper = val.toUpperCase();
+                const matchIdx = desc.indexOf(valUpper);
+                if (matchIdx >= 0) {
+                    b.appendChild(document.createTextNode(desc.substring(0, matchIdx)));
+                    const strong = document.createElement('strong');
+                    strong.textContent = desc.substring(matchIdx, matchIdx + valUpper.length);
+                    b.appendChild(strong);
+                    b.appendChild(document.createTextNode(desc.substring(matchIdx + valUpper.length)));
+                } else {
+                    b.textContent = desc;
+                }
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.value = arr[i].DESCRICAO;
+                b.appendChild(hiddenInput);
                 /*execute a function when someone clicks on the item value (DIV element):*/
                 b.addEventListener("click", function (e) {
                     /*insert the value for the autocomplete text field:*/
@@ -723,7 +747,7 @@ produtosPedido.forEach(produto => {
             </td>
         </tr>
     `;
-    tabelaProdutos.innerHTML += corpoTabelaProdutos;
+    tabelaProdutos.insertAdjacentHTML('beforeend', corpoTabelaProdutos);
 
 });
 
