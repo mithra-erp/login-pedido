@@ -483,8 +483,9 @@ document.querySelector("#finaliza-pedido-botao").addEventListener('click', async
     let itens = [];
     let ordem = 0;
     for (const item of produtosPedido) {
-        if (item.preco == 0) {
-            errorAlert('Erro', `Produto ${item.produto} com preço zero!`);
+        if (!Number.isFinite(item.preco) || item.preco <= 0) {
+            let produto = item.produto;
+            errorAlert('Erro', `Produto ${produto} com preço zero!`);
             HideOverlay();
             return;
         }
