@@ -265,13 +265,11 @@ inputCgc.addEventListener('focusout', (event) => {
                 if (client.length > 0) {
                     client = client[0];
                     
-                    /*
                     if (dadosUsuario.CODIGO != '000003' && client.VENDED != dadosUsuario.CODIGO) {
                         errorAlert("Erro!", "Cliente faz parte da carteira de outro representante.\nPor favor LIGUE para a central para autorizar o pedido.")
                         document.getElementById("form-cliente").reset();
                         return;
                     }
-                    */
     
                     clienteAtual = client;
                     document.querySelector("#input-codigo-cliente").value = client.CODIGO;
@@ -485,6 +483,12 @@ document.querySelector("#finaliza-pedido-botao").addEventListener('click', async
     let itens = [];
     let ordem = 0;
     for (const item of produtosPedido) {
+        if (item.preco == 0) {
+            errorAlert('Erro', `Produto ${item.produto} com preço zero!`);
+            HideOverlay();
+            return;
+        }
+
         itens.push({
             ORDEM: (++ordem).toString(),
             PRODUTO: item.codigo,
