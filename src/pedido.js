@@ -27,6 +27,11 @@ document.querySelector("#adiciona-produto-botao").addEventListener('click', (eve
 
   if (!code || !produto.value.trim()) { errorAlert('Erro', 'Selecione um produto'); return; }
   if (!(parseFloat(quantidade.value) > 0)) { errorAlert('Erro', 'Informe uma quantidade válida'); return; }
+  if (!Number.isFinite(precoProduto) || precoProduto <= 0) { errorAlert('Erro', 'Informe um valor válido para o produto'); return; }
+  if (produtosPedido.some(item => item.codigo == code)) {
+    errorAlert('Item duplicado', 'Este produto já foi adicionado ao pedido. Remova o item existente antes de adicioná-lo novamente.');
+    return;
+  }
 
   let index = produtosPedido.length > 0 ? Math.max(...produtosPedido.map(e => e.index)) : 0;
 
@@ -266,19 +271,21 @@ inputCgc.addEventListener('focusout', (event) => {
     if (response.ok) {
       let json = await response.json()
       if (json.success) {
-        let client = json.data;
+        let clients = json.data;
 
-        if (client.length > 0) {
-          client = client[0];
+        if (clients.length > 0) {
+          let client = dadosUsuario.CODIGO == '000003'
+            ? clients[0]
+            : clients.find(item => item.VENDED == dadosUsuario.CODIGO);
 
-          if (client.BLOQUEIO == 'S') {
-            errorAlert("Erro!", "Cliente bloqueado!\nPor favor LIGUE para a central para mais informações.")
+          if (!client) {
+            errorAlert("Erro!", "Cliente faz parte da carteira de outro representante.\nPor favor LIGUE para a central para autorizar o pedido.")
             document.getElementById("form-cliente").reset();
             return;
           }
 
-          if (dadosUsuario.CODIGO != '000003' && client.VENDED != dadosUsuario.CODIGO) {
-            errorAlert("Erro!", "Cliente faz parte da carteira de outro representante.\nPor favor LIGUE para a central para autorizar o pedido.")
+          if (client.BLOQUEIO == 'S') {
+            errorAlert("Erro!", "Cliente bloqueado!\nPor favor LIGUE para a central para mais informações.")
             document.getElementById("form-cliente").reset();
             return;
           }
@@ -434,26 +441,214 @@ document.querySelector("#input-cep").addEventListener('focusout', async (event) 
   }
 })
 
-document.querySelector("#teste-pdf")?.addEventListener('click', () => {
-  var source = window.document.getElementsByTagName("body")[0];
-  html2canvas(source).then((canvas) => {
+const gerarPdfPedido = (chave, pedido, dadosPdf, produtos) => {
+  const doc = new jsPDF('p', 'mm', 'a4');
+  const margem = 12;
+  const largura = 186;
+  const azul = [31, 78, 121];
+  const azulClaro = [225, 235, 245];
+  let y = 12;
+  let pagina = 1;
 
-    var imgData = canvas.toDataURL('image/jpeg');
+  const texto = (valor) => String(valor ?? '').trim() || '-';
+  const novaPagina = () => {
+    doc.setFontSize(8);
+    doc.setTextColor(100, 100, 100);
+    doc.text(`Pedido ${chave} - Página ${pagina}`, margem, 290);
+    pagina++;
+    doc.setTextColor(0, 0, 0);
+    doc.addPage();
+    y = 12;
+    desenharCabecalho(false);
+  }
 
-    //console.log('Image URL: ' + imgData);
+  const verificarEspaco = (altura) => {
+    if (y + altura > 282) novaPagina();
+  }
 
-    var doc = new jsPDF('p', 'mm', 'a4');
+  const desenharCabecalho = (completo) => {
+    doc.setFillColor(...azul);
+    doc.rect(margem, y, largura, 22, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(17);
+    doc.setFontStyle('bold');
+    doc.text(completo ? 'COMPROVANTE DE PEDIDO' : `PEDIDO ${chave}`, margem + 6, y + 9);
+    doc.setFontSize(10);
+    doc.setFontStyle('normal');
+    doc.text(`Nº ${chave}`, margem + 6, y + 16);
+    doc.text(new Date().toLocaleDateString('pt-BR'), margem + largura - 6, y + 16, { align: 'right' });
+    doc.setTextColor(0, 0, 0);
+    y += 28;
+  }
 
-    //doc.setFontSize(10);
+  const desenharTituloSecao = (titulo) => {
+    verificarEspaco(9);
+    doc.setFillColor(...azulClaro);
+    doc.setDrawColor(170, 190, 210);
+    doc.rect(margem, y, largura, 8, 'FD');
+    doc.setTextColor(...azul);
+    doc.setFontSize(10);
+    doc.setFontStyle('bold');
+    doc.text(titulo, margem + 3, y + 5.5);
+    doc.setTextColor(0, 0, 0);
+    doc.setFontStyle('normal');
+    y += 8;
+  }
 
-    //doc.text(10, 15, 'Filter section will be printed where.')
+  const desenharCampos = (campos) => {
+    const colunas = 2;
+    const larguraColuna = largura / colunas;
+    for (let i = 0; i < campos.length; i += colunas) {
+      verificarEspaco(14);
+      const linha = campos.slice(i, i + colunas);
+      linha.forEach((campo, coluna) => {
+        const x = margem + coluna * larguraColuna;
+        doc.setDrawColor(215, 215, 215);
+        doc.rect(x, y, larguraColuna, 14);
+        doc.setFontSize(7);
+        doc.setTextColor(100, 100, 100);
+        doc.text(campo[0].toUpperCase(), x + 3, y + 4);
+        doc.setFontSize(9);
+        doc.setTextColor(20, 20, 20);
+        const valor = doc.splitTextToSize(texto(campo[1]), larguraColuna - 6)[0];
+        doc.text(valor, x + 3, y + 10);
+      });
+      y += 14;
+    }
+    y += 5;
+  }
 
-    doc.addImage(imgData, 'jpeg', 5, -10, 200, 200);
+  desenharCabecalho(true);
+  desenharTituloSecao('DADOS DO CLIENTE');
+  desenharCampos([
+    ['Código', pedido.CLIENTE],
+    ['Nome / Razão social', dadosPdf.nomeCliente],
+    ['CPF / CNPJ', dadosPdf.cgc],
+    ['Telefone', dadosPdf.telefone],
+    ['Endereço', dadosPdf.endereco],
+    ['Cidade', dadosPdf.cidade]
+  ]);
 
-    doc.save('sample.pdf');
+  desenharTituloSecao('VENDA E PAGAMENTO');
+  desenharCampos([
+    ['Vendedor', dadosPdf.nomeVendedor],
+    ['Tipo', dadosPdf.tipoPedido],
+    ['Forma de pagamento', dadosPdf.formaPagamento],
+    ['Condição de pagamento', dadosPdf.condicaoPagamento]
+  ]);
 
+  desenharTituloSecao('ITENS DO PEDIDO');
+  const colunas = [
+    { titulo: 'CÓDIGO / PRODUTO', x: margem, largura: 100, alinhamento: 'left' },
+    { titulo: 'QTD.', x: margem + 100, largura: 20, alinhamento: 'right' },
+    { titulo: 'UNITÁRIO', x: margem + 120, largura: 30, alinhamento: 'right' },
+    { titulo: 'TOTAL', x: margem + 150, largura: 36, alinhamento: 'right' }
+  ];
+
+  const desenharCabecalhoItens = () => {
+    doc.setFillColor(70, 70, 70);
+    doc.rect(margem, y, largura, 9, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(8);
+    doc.setFontStyle('bold');
+    colunas.forEach(coluna => {
+      const x = coluna.alinhamento == 'right' ? coluna.x + coluna.largura - 3 : coluna.x + 3;
+      doc.text(coluna.titulo, x, y + 6, { align: coluna.alinhamento });
+    });
+    doc.setFontStyle('normal');
+    doc.setTextColor(0, 0, 0);
+    y += 9;
+  }
+
+  desenharCabecalhoItens();
+  produtos.forEach((item, indice) => {
+    const descricao = doc.splitTextToSize(`${item.codigo} - ${item.produto}`, 94);
+    const altura = Math.max(11, descricao.length * 4.5 + 4);
+    if (y + altura > 276) {
+      novaPagina();
+      desenharTituloSecao('ITENS DO PEDIDO - CONTINUAÇÃO');
+      desenharCabecalhoItens();
+    }
+    doc.setFillColor(...(indice % 2 == 0 ? [248, 248, 248] : [255, 255, 255]));
+    doc.setDrawColor(220, 220, 220);
+    doc.rect(margem, y, largura, altura, 'FD');
+    [margem + 100, margem + 120, margem + 150].forEach(x => doc.line(x, y, x, y + altura));
+    doc.setFontSize(8.5);
+    doc.text(descricao, margem + 3, y + 6);
+    doc.text(texto(item.quantidade), margem + 117, y + 6, { align: 'right' });
+    doc.text(`R$ ${Number(item.preco).toLocalCurrency()}`, margem + 147, y + 6, { align: 'right' });
+    doc.text(`R$ ${(item.quantidade * item.preco).toLocalCurrency()}`, margem + 183, y + 6, { align: 'right' });
+    y += altura;
   });
-})
+
+  verificarEspaco(42);
+  y += 5;
+  doc.setFillColor(...azulClaro);
+  doc.setDrawColor(...azul);
+  doc.rect(margem + 112, y, 74, 14, 'FD');
+  doc.setFontSize(9);
+  doc.setTextColor(...azul);
+  doc.setFontStyle('bold');
+  doc.text('TOTAL DO PEDIDO', margem + 116, y + 5);
+  doc.setFontSize(14);
+  doc.text(`R$ ${Number(pedido.VALOR).toLocalCurrency()}`, margem + 182, y + 11, { align: 'right' });
+  doc.setFontStyle('normal');
+  doc.setTextColor(0, 0, 0);
+  y += 20;
+
+  if (texto(dadosPdf.observacao) != '-') {
+    desenharTituloSecao('OBSERVAÇÕES');
+    const observacao = doc.splitTextToSize(texto(dadosPdf.observacao), largura - 8);
+    const alturaObs = Math.max(14, observacao.length * 5 + 6);
+    verificarEspaco(alturaObs);
+    doc.setDrawColor(215, 215, 215);
+    doc.rect(margem, y, largura, alturaObs);
+    doc.setFontSize(9);
+    doc.text(observacao, margem + 4, y + 6);
+    y += alturaObs;
+  }
+
+  doc.setFontSize(8);
+  doc.setTextColor(100, 100, 100);
+  doc.text(`Pedido ${chave} - Página ${pagina}`, margem, 290);
+  doc.text('Documento gerado pelo sistema de pedidos', margem + largura, 290, { align: 'right' });
+
+  return doc;
+}
+
+const compartilharPdfPedido = async (doc, chave) => {
+  const arquivo = new File([doc.output('blob')], `pedido-${chave}.pdf`, { type: 'application/pdf' });
+
+  if (!navigator.share || !navigator.canShare || !navigator.canShare({ files: [arquivo] })) {
+    baixarPdfPedido(doc, chave);
+    return;
+  }
+
+  await navigator.share({
+    title: `Pedido ${chave}`,
+    text: `Pedido ${chave}`,
+    files: [arquivo]
+  });
+}
+
+const baixarPdfPedido = (doc, chave) => {
+  const blob = doc.output('blob');
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = `pedido-${chave}.pdf`;
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+}
+
+const recarregarAposDownload = () => {
+  setTimeout(() => document.location.reload(), 1500);
+}
 
 document.querySelector("#finaliza-pedido-botao").addEventListener('click', async (event) => {
   event.preventDefault();
@@ -493,6 +688,12 @@ document.querySelector("#finaliza-pedido-botao").addEventListener('click', async
 
   if (produtosPedido.length == 0) {
     errorAlert('Erro', 'Pedido sem itens');
+    return;
+  }
+
+  const codigosProdutos = produtosPedido.map(item => String(item.codigo));
+  if (new Set(codigosProdutos).size != codigosProdutos.length) {
+    errorAlert('Item duplicado', 'O pedido possui produtos duplicados. Remova os itens repetidos antes de finalizar.');
     return;
   }
 
@@ -566,16 +767,55 @@ document.querySelector("#finaliza-pedido-botao").addEventListener('click', async
       let json = await response.json();
       if (json.success) {
         let chave = json.data[0];
+        const pedidoSalvo = data[0].data[0];
+        const dadosPdf = {
+          nomeCliente: document.querySelector("#input-nome").value,
+          cgc: inputCgc.value,
+          telefone: document.querySelector("#input-telefone").value,
+          endereco: [
+            document.querySelector("#input-endereco").value,
+            document.querySelector("#input-numero").value,
+            document.querySelector("#input-bairro").value
+          ].filter(Boolean).join(', '),
+          cidade: document.querySelector("#input-cidade").value,
+          nomeVendedor: nomeVendedor,
+          tipoPedido: tipoPedido == 'P' ? 'Pedido' : 'Orçamento',
+          formaPagamento: formaPagamento.options[formaPagamento.selectedIndex]?.text,
+          condicaoPagamento: condicaoPagamento.options[condicaoPagamento.selectedIndex]?.text,
+          observacao: observacao.value
+        };
+        const pdfPedido = gerarPdfPedido(chave, pedidoSalvo, dadosPdf, produtosPedido);
 
         $.confirm({
           title: 'Sucesso!',
-          content: `Pedido ${chave} salvo!`,
+          content: `Pedido ${chave} salvo! Escolha como deseja entregar o PDF ao cliente.`,
           type: 'green',
           typeAnimated: true,
           buttons: {
-            success: {
-              text: 'Ok',
+            compartilhar: {
+              text: 'Compartilhar PDF',
               btnClass: 'btn-green',
+              action: async function () {
+                try {
+                  await compartilharPdfPedido(pdfPedido, chave);
+                } catch (error) {
+                  if (error.name != 'AbortError') {
+                    baixarPdfPedido(pdfPedido, chave);
+                  }
+                }
+                recarregarAposDownload();
+              }
+            },
+            baixar: {
+              text: 'Baixar PDF',
+              btnClass: 'btn-blue',
+              action: function () {
+                baixarPdfPedido(pdfPedido, chave);
+                recarregarAposDownload();
+              }
+            },
+            concluir: {
+              text: 'Concluir',
               action: function () {
                 document.location.reload();
               }
