@@ -162,11 +162,18 @@ const buscaCondicoes = () => {
   let data = {
     area: "CONDPG",
     fields: ["CODIGO", "DESCRICAO"],
-    search: [{
-      field: "CODIGO",
-      operation: "GREATER_THAN",
-      value: ''
-    }]
+    search: [
+      {
+        field: "CODIGO",
+        operation: "GREATER_THAN",
+        value: ''
+      },
+      {
+        field: "BLOQUEIO",
+        operation: "DIFFERENT_THAN",
+        value: 'S'
+      }
+    ]
   }
 
   ShowOverlay();
